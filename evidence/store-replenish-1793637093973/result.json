@@ -1,0 +1,115 @@
+{
+  "run_id": "store-replenish-1793637093973",
+  "scope": "STORE-REPLENISH-S1",
+  "status": "pass",
+  "counted": false,
+  "note": "synthetic 2-store x 8-SKU table only; no store, product or sales data",
+  "metrics": [
+    {
+      "req_id": "AC-R01",
+      "metric": "suggest totals",
+      "threshold": "rows=16 stores=2 unique_skus=8 order_lines=11 units=398 value=476880 risk=2 slow=1",
+      "actual": "rows=16 stores=2 unique_skus=8 order_lines=11 units=398 value=476880 risk=2 slow=1",
+      "pass": true
+    },
+    {
+      "req_id": "AC-R02",
+      "metric": "MOQ rounding",
+      "threshold": "苏打=72 牛奶=60 乌龙=30 坚果=12",
+      "actual": "苏打=72 牛奶=60 乌龙=30 坚果=12",
+      "pass": true
+    },
+    {
+      "req_id": "AC-R03",
+      "metric": "stockout and slow flags",
+      "threshold": "risk=上海静安店/SKU-DA-001|上海静安店/SKU-SN-001 slow=成都高新店/SKU-HH-002 now=0",
+      "actual": "risk=上海静安店/SKU-DA-001|上海静安店/SKU-SN-001 slow=成都高新店/SKU-HH-002 now=0",
+      "pass": true
+    },
+    {
+      "req_id": "AC-R04",
+      "metric": "store aggregation",
+      "threshold": "上海=8/6/282/290820/2/medium 成都=8/5/116/186060/0/low",
+      "actual": "上海=8/6/282/290820/2/medium 成都=8/5/116/186060/0/low",
+      "pass": true
+    },
+    {
+      "req_id": "AC-R05",
+      "metric": "store risk order",
+      "threshold": "order=上海静安店/成都高新店",
+      "actual": "order=上海静安店/成都高新店",
+      "pass": true
+    },
+    {
+      "req_id": "AC-R06",
+      "metric": "plan equals suggest totals",
+      "threshold": "totals=same source=same",
+      "actual": "totals=same source=same",
+      "pass": true
+    },
+    {
+      "req_id": "AC-R07",
+      "metric": "replenishment CSV",
+      "threshold": "rows=11 lines=12 stores=2 units=398 value=476880 header=ok hash=ok",
+      "actual": "rows=11 lines=12 stores=2 units=398 value=476880 header=ok hash=ok",
+      "pass": true
+    },
+    {
+      "req_id": "AC-R08",
+      "metric": "include zero",
+      "threshold": "rows=16 slow=1",
+      "actual": "rows=16 slow=1",
+      "pass": true
+    },
+    {
+      "req_id": "AC-R09",
+      "metric": "15-day window",
+      "threshold": "order_lines=14 units=1774 risk=13",
+      "actual": "order_lines=14 units=1774 risk=13",
+      "pass": true
+    },
+    {
+      "req_id": "AC-R10",
+      "metric": "bad quantity",
+      "threshold": "E_REPL_QTY",
+      "actual": "E_REPL_QTY",
+      "pass": true
+    },
+    {
+      "req_id": "AC-R11",
+      "metric": "missing column",
+      "threshold": "E_REPL_CSV_ROW",
+      "actual": "E_REPL_CSV_ROW",
+      "pass": true
+    },
+    {
+      "req_id": "AC-R12",
+      "metric": "empty table",
+      "threshold": "E_REPL_EMPTY",
+      "actual": "E_REPL_EMPTY",
+      "pass": true
+    },
+    {
+      "req_id": "AC-R13",
+      "metric": "export path safety",
+      "threshold": "E_REPL_PATH_INVALID",
+      "actual": "E_REPL_PATH_INVALID",
+      "pass": true
+    },
+    {
+      "req_id": "AC-R14",
+      "metric": "no order to export",
+      "threshold": "E_REPL_EMPTY then rows=1",
+      "actual": "E_REPL_EMPTY then rows=1",
+      "pass": true
+    },
+    {
+      "req_id": "AC-R15",
+      "metric": "first CSV row",
+      "threshold": "上海静安店|SKU-SN-001|苏打饼干 400g|20|10|10.00|7|3|72|928.80|是|否|2.0",
+      "actual": "上海静安店|SKU-SN-001|苏打饼干 400g|20|10|10.00|7|3|72|928.80|是|否|2.0",
+      "pass": true
+    }
+  ],
+  "pass": true
+}

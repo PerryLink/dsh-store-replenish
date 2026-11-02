@@ -1,0 +1,15 @@
+[
+  {
+    "path": "docs/assets/quickstart.png",
+    "kind": "quickstart",
+    "alt": "dsh-store-replenish quickstart terminal output",
+    "caption": "Real command: node samples/quickstart/run.mjs --check — a synthetic 2-store × 8-SKU table yields 11 replenishment order lines, 398 units and 4,768.80 estimated value, with 2 stockout risks and 1 slow-moving SKU. Rendered from the captured terminal output with the CJK font msyh.ttc.",
+    "command": "node samples/quickstart/run.mjs --check",
+    "run_at": "2026-11-02T16:30:47Z",
+    "output_sha256": "967c1b17b3b356ea704ca7b05150e19d2ba8a4a7d509ca115fa1a1494d16f1d7",
+    "output_path": "samples/quickstart/expected/result.json",
+    "log": "docs/assets/quickstart.log",
+    "log_sha256": "cc34a46265ece93c098e32c8df3c3c7ce565c23f25561b5c681e285281418409",
+    "image_sha256": "af9d4c0d7e538f399e209f4275eebf0e75933b430301ce91c257f7556de02470"
+  }
+]

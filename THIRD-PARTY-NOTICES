@@ -1,0 +1,11 @@
+Third-party notices for dsh-store-replenish
+
+Runtime:
+- No third-party runtime dependencies. Only Node.js built-ins are used.
+
+Development only (not shipped in lib/):
+- typescript 7.0.2 (Apache-2.0) — build tool.
+- @types/node (MIT) — type declarations.
+- @deepseek-ai/cordis and @deepseek-ai/dsh-tools (MIT) — host plugin/tool contracts.
+
+No store, product or sales data is included. All samples and fixtures are synthetic.

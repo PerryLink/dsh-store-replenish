@@ -1,0 +1,15 @@
+$ node samples/quickstart/run.mjs --check
+dsh-store-replenish quickstart - synthetic 2 stores x 8 SKUs (not store data)
+30-day window: 16 store-SKU rows, 11 order line(s), 398 unit(s), 4,768.80; 2 stockout risk(s), 1 slow-moving
+stores by stockout risk:
+  上海静安店: 6 order line(s), 282 unit(s), 2,908.20, 2 risk (medium)
+  成都高新店: 5 order line(s), 116 unit(s), 1,860.60, 0 risk (low)
+top suggestions:
+  上海静安店 苏打饼干 400g: 72 unit(s), 928.80 [stockout risk]
+  上海静安店 鲜牛奶 950ml: 60 unit(s), 690.00 [stockout risk]
+  上海静安店 抽纸 3层×6包: 60 unit(s), 594.00
+  上海静安店 气泡水 500ml: 48 unit(s), 230.40
+slow-moving: 成都高新店 抑菌洗手液 500ml (turnover 100 days, suggested 0)
+replenishment CSV exports/replenish-30d.csv: 11 rows, 1060 bytes, sha256 4b728ee9a676...
+golden samples/quickstart/expected/result.json matches
+quickstart ok
