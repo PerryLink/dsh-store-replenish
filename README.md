@@ -115,7 +115,7 @@ No. CSV input only; it does not raise purchase orders, call ERP/POS/WMS or send 
 
 ## Version
 
-`0.1.0-alpha.1` · 121 tests pass (`node --test test/*.test.mjs`).
+`0.1.0` · 121 tests pass (`node --test test/*.test.mjs`).
 
 > ⭐ If this helps, a star makes it easier for the next person to find it. Nothing is gated behind it.
 

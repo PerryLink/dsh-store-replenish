@@ -11,7 +11,7 @@ const check = (ok, message) => {
 }
 
 check(pkg.name === 'dsh-store-replenish', `package name must be dsh-store-replenish, got ${pkg.name}`)
-check(/^0\.1\.0-alpha\.\d+$/.test(pkg.version), `unexpected version ${pkg.version}`)
+check(/^\d+\.\d+\.\d+(?:-alpha\.\d+)?$/.test(pkg.version), `unexpected version ${pkg.version}`)
 check(pkg.type === 'module', 'package must be an ES module')
 check(pkg.main === './lib/plugin/index.js', 'main must be ./lib/plugin/index.js')
 check(pkg.types === './lib/plugin/index.d.ts', 'types must be ./lib/plugin/index.d.ts')

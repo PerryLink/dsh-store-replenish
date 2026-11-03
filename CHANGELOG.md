@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.0] — 2026-11-03
+
+### Stable
+
+- First non-alpha release: tool names and the CLI surface are covered by a
+  compatibility promise (breaking changes require a minor bump).
+- Ships a quickstart sample, a one-line prompt, a permission block and real captures.
+
 ## 0.1.0-alpha.1 — 2026-11-03
 
 - First public alpha of `dsh-store-replenish`.
