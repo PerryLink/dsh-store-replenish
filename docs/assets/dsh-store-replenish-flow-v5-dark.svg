@@ -1,0 +1,168 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="660" viewBox="0 0 1100 660" role="img" aria-label="dsh-store-replenish structure: one 10-column store-SKU CSV row is measured on a stock-level gauge (target stock, available stock, gap), the gap is packed along a MOQ ladder into a suggested quantity, rows roll up into per-store plans ranked by stockout risk, and replenish.export writes a fixed 13-column CSV under DSH_HOME">
+<title>dsh-store-replenish: gauge, MOQ ladder, store roll-up, 13-column CSV</title>
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="0.3" y2="1">
+    <stop offset="0" stop-color="#131a2a"/>
+    <stop offset="1" stop-color="#0c1016"/>
+  </linearGradient>
+  <filter id="soft" x="-25%" y="-25%" width="150%" height="170%">
+    <feDropShadow dx="0" dy="8" stdDeviation="11" flood-color="#000000" flood-opacity="0.55"/>
+  </filter>
+  <pattern id="dots" width="26" height="26" patternUnits="userSpaceOnUse">
+    <circle cx="1.3" cy="1.3" r="1.3" fill="#26314a"/>
+  </pattern>
+</defs>
+<rect width="1100" height="660" fill="url(#bg)"/>
+<rect width="1100" height="660" fill="url(#dots)" opacity=".42"/>
+<text x="44" y="62" fill="#f0f3f9" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="34" font-weight="700">dsh-store-replenish</text>
+<text x="44" y="88" fill="#a8b1c4" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', 'Microsoft YaHei', sans-serif" font-size="15">one store-SKU CSV · a gauge per row · MOQ ladder · per-store roll-up · 13-column CSV</text>
+<rect x="812" y="36" width="244" height="34" rx="17" fill="#242d42"/>
+<text x="934" y="58" fill="#8496f5" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14" text-anchor="middle">window_days 30 · 16 rows</text>
+<line x1="44" y1="106" x2="1056" y2="106" stroke="#1e2636" stroke-width="1.5"/>
+<g filter="url(#soft)"><rect x="40" y="118" width="236" height="360" rx="20" fill="#1b2231" stroke="#2e374b" stroke-width="1.5"/></g>
+<text x="60" y="146" fill="#8496f5" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14" letter-spacing="1.2">INPUT · CSV</text>
+<text x="60" y="172" fill="#f0f3f9" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="17" font-weight="700">store-replenish.csv</text>
+<text x="60" y="195" fill="#a8b1c4" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', 'Microsoft YaHei', sans-serif" font-size="14">16 rows · 2 stores · 8 SKUs</text>
+<text x="60" y="215" fill="#a8b1c4" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', 'Microsoft YaHei', sans-serif" font-size="14">UTF-8 · ≤20 MB · header</text>
+<text x="60" y="237" fill="#d9a03c" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', 'Microsoft YaHei', sans-serif" font-size="14">11 of 16 rows need an order</text>
+<line x1="60" y1="252" x2="256" y2="252" stroke="#1e2636" stroke-width="1.4"/>
+<text x="60" y="272" fill="#737b8d" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', 'Microsoft YaHei', sans-serif" font-size="14">columns · 10</text>
+<text x="60" y="290" fill="#737b8d" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', 'Microsoft YaHei', sans-serif" font-size="14">accent feeds formula</text>
+<circle cx="65" cy="301" r="2.6" fill="#8496f5" opacity=".28"/>
+<text x="74" y="306" fill="#737b8d" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14">store</text>
+<circle cx="65" cy="319" r="2.6" fill="#8496f5" opacity=".28"/>
+<text x="74" y="324" fill="#737b8d" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14">sku</text>
+<circle cx="65" cy="337" r="2.6" fill="#8496f5" opacity=".28"/>
+<text x="74" y="342" fill="#737b8d" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14">name</text>
+<circle cx="65" cy="355" r="2.6" fill="#8496f5" opacity=".85"/>
+<text x="74" y="360" fill="#f0f3f9" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14">sales_qty</text>
+<text x="254" y="360" fill="#8496f5" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14" text-anchor="end">300</text>
+<circle cx="65" cy="373" r="2.6" fill="#8496f5" opacity=".85"/>
+<text x="74" y="378" fill="#f0f3f9" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14">stock_qty</text>
+<text x="254" y="378" fill="#8496f5" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14" text-anchor="end">20</text>
+<circle cx="65" cy="391" r="2.6" fill="#8496f5" opacity=".85"/>
+<text x="74" y="396" fill="#f0f3f9" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14">in_transit</text>
+<text x="254" y="396" fill="#8496f5" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14" text-anchor="end">10</text>
+<circle cx="65" cy="409" r="2.6" fill="#8496f5" opacity=".85"/>
+<text x="74" y="414" fill="#f0f3f9" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14">safety_days</text>
+<text x="254" y="414" fill="#8496f5" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14" text-anchor="end">3</text>
+<circle cx="65" cy="427" r="2.6" fill="#8496f5" opacity=".85"/>
+<text x="74" y="432" fill="#f0f3f9" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14">cycle_days</text>
+<text x="254" y="432" fill="#8496f5" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14" text-anchor="end">7</text>
+<circle cx="65" cy="445" r="2.6" fill="#8496f5" opacity=".85"/>
+<text x="74" y="450" fill="#f0f3f9" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14">moq</text>
+<text x="254" y="450" fill="#8496f5" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14" text-anchor="end">24</text>
+<circle cx="65" cy="463" r="2.6" fill="#8496f5" opacity=".85"/>
+<text x="74" y="468" fill="#f0f3f9" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14">unit_price_cents</text>
+<text x="254" y="468" fill="#8496f5" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14" text-anchor="end">1290</text>
+<g filter="url(#soft)"><rect x="292" y="118" width="420" height="360" rx="20" fill="#1b2231" stroke="#2e374b" stroke-width="1.5"/></g>
+<rect x="312" y="132" width="250" height="28" rx="14" fill="#242d42"/>
+<text x="324" y="152" fill="#8496f5" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="17">replenish.suggest · R0</text>
+<text x="696" y="152" fill="#737b8d" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14" text-anchor="end">value ¥928.80</text>
+<text x="312" y="186" fill="#f0f3f9" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="15">target 100 = daily 10 × (cycle 7 + safety 3)</text>
+<text x="312" y="206" fill="#a8b1c4" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14">daily 10 = sales_qty 300 ÷ window_days 30</text>
+<text x="312" y="226" fill="#8496f5" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14">suggested 72 = ceil(70 / 24) × 24</text>
+<line x1="312" y1="240" x2="696" y2="240" stroke="#1e2636" stroke-width="1.4"/>
+<line x1="368" y1="256" x2="368" y2="448" stroke="#1e2636" stroke-width="1.6"/>
+<line x1="362" y1="448" x2="368" y2="448" stroke="#a8b1c4" stroke-width="1.4"/>
+<text x="357" y="453" fill="#737b8d" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14" text-anchor="end">0</text>
+<line x1="362" y1="416" x2="368" y2="416" stroke="#a8b1c4" stroke-width="1.4"/>
+<text x="357" y="421" fill="#737b8d" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14" text-anchor="end">20</text>
+<line x1="362" y1="384" x2="368" y2="384" stroke="#a8b1c4" stroke-width="1.4"/>
+<text x="357" y="389" fill="#737b8d" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14" text-anchor="end">40</text>
+<line x1="362" y1="352" x2="368" y2="352" stroke="#a8b1c4" stroke-width="1.4"/>
+<text x="357" y="357" fill="#737b8d" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14" text-anchor="end">60</text>
+<line x1="362" y1="320" x2="368" y2="320" stroke="#a8b1c4" stroke-width="1.4"/>
+<text x="357" y="325" fill="#737b8d" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14" text-anchor="end">80</text>
+<line x1="362" y1="288" x2="368" y2="288" stroke="#a8b1c4" stroke-width="1.4"/>
+<text x="357" y="293" fill="#737b8d" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14" text-anchor="end">100</text>
+<line x1="362" y1="256" x2="368" y2="256" stroke="#a8b1c4" stroke-width="1.4"/>
+<text x="357" y="261" fill="#737b8d" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14" text-anchor="end">120</text>
+<rect x="378" y="416" width="50" height="32" rx="4" fill="#8496f5"/>
+<rect x="378" y="400" width="50" height="16" rx="4" fill="#8496f5" opacity=".45"/>
+<text x="403" y="440" fill="#ffffff" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14" font-weight="700" text-anchor="middle">20</text>
+<text x="403" y="414" fill="#f0f3f9" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14" font-weight="700" text-anchor="middle">10</text>
+<text x="378" y="374" fill="#a8b1c4" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14">available 30</text>
+<line x1="352" y1="288" x2="696" y2="288" stroke="#8496f5" stroke-width="1.6" stroke-dasharray="8 7" opacity=".85"/>
+<text x="696" y="278" fill="#8496f5" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14" text-anchor="end">target</text>
+<path d="M480 288 V 400" fill="none" stroke="#8496f5" stroke-width="2.2"/>
+<path d="M475 288 h10 M475 400 h10" stroke="#8496f5" stroke-width="2.2"/>
+<text x="494" y="344" fill="#d9a03c" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="15" font-weight="700">gap 70</text>
+<path d="M558 340 h20" stroke="#8496f5" stroke-width="2.2"/>
+<path d="M570 334 l8 6 -8 6" fill="none" stroke="#8496f5" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="584" y="402" width="96" height="46" rx="10" fill="#8496f5"/>
+<rect x="588" y="406" width="88" height="8" rx="4" fill="#ffffff" opacity=".16"/>
+<text x="632" y="431" fill="#ffffff" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="17" font-weight="700" text-anchor="middle">24</text>
+<rect x="584" y="352" width="96" height="46" rx="10" fill="#8496f5"/>
+<rect x="588" y="356" width="88" height="8" rx="4" fill="#ffffff" opacity=".16"/>
+<text x="632" y="381" fill="#ffffff" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="17" font-weight="700" text-anchor="middle">24</text>
+<rect x="584" y="302" width="96" height="46" rx="10" fill="#8496f5"/>
+<rect x="588" y="306" width="88" height="8" rx="4" fill="#ffffff" opacity=".16"/>
+<text x="632" y="331" fill="#ffffff" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="17" font-weight="700" text-anchor="middle">24</text>
+<text x="560" y="280" fill="#a8b1c4" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14" text-anchor="end">3 × 24 = 72</text>
+<text x="312" y="470" fill="#a8b1c4" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14">available = stock 20 + in_transit 10</text>
+<g filter="url(#soft)"><rect x="728" y="118" width="332" height="360" rx="20" fill="#1b2231" stroke="#2e374b" stroke-width="1.5"/></g>
+<rect x="748" y="132" width="220" height="28" rx="14" fill="#242d42"/>
+<text x="760" y="152" fill="#8496f5" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="17">replenish.plan · R0</text>
+<text x="748" y="184" fill="#f0f3f9" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', 'Microsoft YaHei', sans-serif" font-size="17" font-weight="700">per-store roll-up</text>
+<text x="748" y="204" fill="#737b8d" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14">sort: now↓ risk↓ value↓ name↑</text>
+<line x1="748" y1="220" x2="1040" y2="220" stroke="#1e2636" stroke-width="1.4"/>
+<text x="748" y="241" fill="#737b8d" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14">#1</text>
+<text x="770" y="241" fill="#f0f3f9" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="17" font-weight="700">上海静安店</text>
+<text x="1040" y="241" fill="#f0f3f9" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14" text-anchor="end">¥2,908.20</text>
+<rect x="748" y="249" width="292" height="10" rx="5" fill="#243049"/>
+<rect x="748" y="249" width="288" height="10" rx="5" fill="#8496f5"/>
+<text x="748" y="278" fill="#a8b1c4" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14">8 SKU · 6 lines · 282 units</text>
+<text x="748" y="296" fill="#737b8d" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14">medium · 2 stockout risks</text>
+<text x="748" y="325" fill="#737b8d" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14">#2</text>
+<text x="770" y="325" fill="#f0f3f9" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="17" font-weight="700">成都高新店</text>
+<text x="1040" y="325" fill="#f0f3f9" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14" text-anchor="end">¥1,860.60</text>
+<rect x="748" y="333" width="292" height="10" rx="5" fill="#243049"/>
+<rect x="748" y="333" width="118" height="10" rx="5" fill="#8496f5"/>
+<text x="748" y="362" fill="#a8b1c4" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14">8 SKU · 5 lines · 116 units</text>
+<text x="748" y="380" fill="#737b8d" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14">low · 0 stockout risks</text>
+<rect x="748" y="392" width="292" height="74" rx="14" fill="#171e2d" stroke="#2b3448" stroke-width="1.4"/>
+<text x="764" y="416" fill="#8496f5" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14">totals</text>
+<text x="1026" y="416" fill="#737b8d" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14" text-anchor="end">2 risk · 1 slow</text>
+<text x="764" y="438" fill="#a8b1c4" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14">16 rows · 11 lines · 2 stores</text>
+<text x="764" y="458" fill="#f0f3f9" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14">398 units · ¥4,768.80</text>
+<path d="M279 292 L288 300 L279 308" fill="none" stroke="#8496f5" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" opacity=".8"/>
+<path d="M715 292 L724 300 L715 308" fill="none" stroke="#8496f5" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" opacity=".8"/>
+<path d="M896 478 v8" stroke="#8496f5" stroke-width="2" opacity=".75"/>
+<path d="M890 485 l6 6 6 -6" fill="none" stroke="#8496f5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity=".75"/>
+<g filter="url(#soft)"><rect x="40" y="492" width="1020" height="118" rx="18" fill="#1b2231" stroke="#2e374b" stroke-width="1.5"/></g>
+<rect x="60" y="504" width="242" height="28" rx="14" fill="#242d42"/>
+<text x="72" y="524" fill="#8496f5" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="17">replenish.export · R1</text>
+<text x="1040" y="524" fill="#737b8d" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14" text-anchor="end">sha256 · bytes · rows</text>
+<text x="60" y="552" fill="#f0f3f9" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14">write → $DSH_HOME/dsh-store-replenish/exports/replenish-30d.csv</text>
+<rect x="60" y="562" width="48" height="26" rx="8" fill="#242d42"/>
+<text x="70" y="580" fill="#8496f5" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14">门店</text>
+<rect x="114" y="562" width="45" height="26" rx="8" fill="#242d42"/>
+<text x="124" y="580" fill="#8496f5" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14">SKU</text>
+<rect x="165" y="562" width="48" height="26" rx="8" fill="#242d42"/>
+<text x="175" y="580" fill="#8496f5" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14">品名</text>
+<rect x="219" y="562" width="76" height="26" rx="8" fill="#242d42"/>
+<text x="229" y="580" fill="#8496f5" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14">当前库存</text>
+<rect x="301" y="562" width="48" height="26" rx="8" fill="#242d42"/>
+<text x="311" y="580" fill="#8496f5" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14">在途</text>
+<rect x="355" y="562" width="76" height="26" rx="8" fill="#242d42"/>
+<text x="365" y="580" fill="#8496f5" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14">日均销量</text>
+<rect x="437" y="562" width="104" height="26" rx="8" fill="#242d42"/>
+<text x="447" y="580" fill="#8496f5" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14">补货周期天数</text>
+<rect x="547" y="562" width="76" height="26" rx="8" fill="#242d42"/>
+<text x="557" y="580" fill="#8496f5" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14">安全天数</text>
+<rect x="629" y="562" width="90" height="26" rx="8" fill="#242d42"/>
+<text x="639" y="580" fill="#8496f5" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14">建议补货量</text>
+<rect x="725" y="562" width="76" height="26" rx="8" fill="#242d42"/>
+<text x="735" y="580" fill="#8496f5" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14">预估金额</text>
+<rect x="807" y="562" width="76" height="26" rx="8" fill="#242d42"/>
+<text x="817" y="580" fill="#8496f5" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14">缺货风险</text>
+<rect x="889" y="562" width="48" height="26" rx="8" fill="#242d42"/>
+<text x="899" y="580" fill="#8496f5" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14">滞销</text>
+<rect x="943" y="562" width="76" height="26" rx="8" fill="#242d42"/>
+<text x="953" y="580" fill="#8496f5" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14">周转天数</text>
+<text x="60" y="602" fill="#737b8d" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14">default: suggested_qty &gt; 0 only · include_zero=true appends the rest</text>
+<text x="1040" y="602" fill="#737b8d" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14" text-anchor="end">E_REPL_EMPTY when nothing to export</text>
+<text x="44" y="630" fill="#a8b1c4" font-family="ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace" font-size="14">slow_moving ← turnover &gt; 60 d · stockout_risk ← available &lt; daily × cycle_days · stockout_now ← stock = 0 &amp; daily &gt; 0</text>
+<text x="44" y="648" fill="#737b8d" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', 'Microsoft YaHei', sans-serif" font-size="14">R0 read-only · R1 local write · source CSV never modified · no network · integer units / integer cents</text>
+</svg>

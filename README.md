@@ -1,8 +1,8 @@
 <div align="center">
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/dsh-store-replenish-flow-dark.svg">
-  <img src="docs/assets/dsh-store-replenish-flow-light.svg" width="100%" alt="dsh-store-replenish 数据流：门店-SKU 销售库存 CSV → replenish.suggest（日均销量 ×（补货周期 + 安全天数）− 当前库存 − 在途，向上取整到 MOQ）→ replenish.plan（按门店汇总、按缺货风险排序）→ replenish.export（补货 CSV 写入 $DSH_HOME/dsh-store-replenish/exports/）；全程不联网">
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/dsh-store-replenish-hero-zh-dark.webp">
+  <img src="docs/assets/dsh-store-replenish-hero-zh-light.webp" width="100%" alt="dsh-store-replenish 横幅：一条门店-SKU 行（上海静安店 SKU-SN-001，日均 10 件、库存 20、在途 10、起订量 24）在库存量尺上量出目标 100、可用 30、缺口 70，再沿起订量阶梯压成 3 包 24 件，得到建议 72 件、预估 ¥928.80">
 </picture>
 
 # dsh-store-replenish
@@ -37,6 +37,11 @@ dsh plugin --profile <profile> add dsh-store-replenish
 
 - **适合**：几十到几千个门店-SKU 组合的日常补货；需要把「日均销量、当前库存、在途、安全天数、补货周期、起订量」固定成一套可复核的算法；需要按门店汇总 SKU 数、总件数和预估金额；需要先看缺货风险再决定补货顺序；需要把补货单交给店长、采购或仓库复核。
 - **不适合**：自动下采购单、自动调拨或对接 ERP / POS / WMS；多仓、多币种、税率或含税价换算；促销、季节、保质期、批次或效期建模；EOQ、持有成本、服务水平或安全库存优化（安全天数由你输入）；直接读 Excel / PDF / 图片（请先导出成 CSV）；把建议当成采购承诺。
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/dsh-store-replenish-flow-v5-dark.svg">
+  <img src="docs/assets/dsh-store-replenish-flow-v5-light.svg" width="100%" alt="dsh-store-replenish 结构：10 列门店-SKU 销售库存 CSV（16 行）→ replenish.suggest 逐行在库存量尺上量出目标、可用与缺口，再沿起订量阶梯取整成建议量（R0）→ replenish.plan 汇总成按缺货风险排序的门店补货单（R0）→ replenish.export 写成固定 13 列的补货 CSV 落到 $DSH_HOME/dsh-store-replenish/exports/（R1）；源 CSV 只读、全程不联网">
+</picture>
 
 ## 三步上手
 
@@ -340,7 +345,7 @@ node samples/quickstart/run.mjs --check  # 合成样例，应输出 quickstart o
 
 TypeScript 源码在 `src/`（`src/core/` 负责 CSV 解析、补货计算、MOQ 取整、整数分金额、导出与路径安全；`src/plugin/` 负责宿主面与工具注册），构建产物在 `lib/`；随包样例在 `samples/quickstart/`。当前版本 `0.1.0`（与 `package.json` 一致）。测试用 `node --test test/*.test.mjs`；公开样本缺失导致的 skip 属正常，不是失败。
 
-开头流程图由 [`scripts/gen-readme-assets.py`](scripts/gen-readme-assets.py) 程序化生成（Python + Pillow，缺 CJK 字体会直接报错退出）：`python scripts/gen-readme-assets.py` 可重复执行，输出 `docs/assets/dsh-store-replenish-flow-{light,dark}.svg`；本仓没有 benchmark 数据集，因此不画 evidence 图。
+开头 hero 与结构图都由 [`scripts/gen-readme-assets.py`](scripts/gen-readme-assets.py) 程序化生成（hero 用 Python + Pillow 渲染成 1440×576 的 webp，结构图是手写 SVG，缺 CJK 字体会直接报错退出）：`python scripts/gen-readme-assets.py` 可重复执行，输出 `docs/assets/dsh-store-replenish-hero-{zh,en}-{light,dark}.webp` 与 `docs/assets/dsh-store-replenish-flow-v5-{light,dark}.svg`；图里的数字直接读 `samples/quickstart/expected/result.json`，不会和金标漂移。本仓没有 benchmark 数据集，因此不画 evidence 图。
 
 Topics：`deepseek-harness`, `dsh`, `dsh-plugin`, `retail`, `replenishment`, `inventory`, `stockout`, `store-ops`, `csv`, `perrylink`
 

@@ -1,8 +1,8 @@
 <div align="center">
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/dsh-store-replenish-flow-dark.svg">
-  <img src="docs/assets/dsh-store-replenish-flow-light.svg" width="100%" alt="dsh-store-replenish डेटा फ़्लो: स्टोर-SKU बिक्री/इन्वेंटरी CSV → replenish.suggest (दैनिक औसत × (साइकल दिन + सेफ्टी दिन) − स्टॉक − ट्रांज़िट में, MOQ तक ऊपर की ओर पूर्णांकित) → replenish.plan (स्टॉकआउट जोखिम के क्रम में प्रति-स्टोर सारांश) → replenish.export (पुनःपूर्ति CSV, $DSH_HOME/dsh-store-replenish/exports/ में); कहीं भी नेटवर्क नहीं">
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/dsh-store-replenish-hero-en-dark.webp">
+  <img src="docs/assets/dsh-store-replenish-hero-en-light.webp" width="100%" alt="dsh-store-replenish बैनर: एक स्टोर-SKU पंक्ति (Shanghai Jing'an, SKU-SN-001: दैनिक 10, स्टॉक 20, ट्रांज़िट 10, MOQ 24) को स्टॉक-लेवल गेज पर नापकर लक्ष्य 100, उपलब्ध 30 और खाई 70 मिलती है, फिर MOQ सीढ़ी से 24 की 3 पैक बनती हैं, यानी सुझाव 72 इकाई और अनुमानित मूल्य 928.80">
 </picture>
 
 # dsh-store-replenish
@@ -37,6 +37,11 @@ dsh plugin --profile <profile> add dsh-store-replenish
 
 - **उपयुक्त:** दसियों से हज़ारों स्टोर-SKU संयोजन; दैनिक औसत, स्टॉक, ट्रांज़िट, सेफ्टी दिन, साइकल दिन और MOQ को एक ऑडिट-योग्य नियम में बाँधना; प्रति-स्टोर SKU संख्या, कुल इकाई और अनुमानित राशि; स्टॉकआउट जोखिम के आधार पर पुनःपूर्ति क्रम तय करना; स्टोर प्रबंधक, खरीदार या वेयरहाउस के समीक्षा हेतु सूची।
 - **उपयुक्त नहीं:** खरीद ऑर्डर जारी करना, ट्रांसफ़र या ERP/POS/WMS एकीकरण; मल्टी-वेयरहाउस, मल्टी-करेंसी, कर या कर-सहित मूल्य; प्रमोशन, मौसम, शेल्फ लाइफ़, बैच या एक्सपायरी; EOQ, कैरिंग कॉस्ट, सर्विस लेवल या सेफ्टी-स्टॉक ऑप्टिमाइज़ेशन (सेफ्टी दिन इनपुट हैं); सीधे Excel/PDF/इमेज पढ़ना (पहले CSV निर्यात करें); सुझाव को खरीद प्रतिबद्धता मानना।
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/dsh-store-replenish-flow-v5-dark.svg">
+  <img src="docs/assets/dsh-store-replenish-flow-v5-light.svg" width="100%" alt="dsh-store-replenish संरचना: 10 कॉलम वाली स्टोर-SKU बिक्री/इन्वेंटरी CSV (16 पंक्तियाँ) → replenish.suggest हर पंक्ति का लक्ष्य, उपलब्ध और खाई स्टॉक-लेवल गेज पर नापकर MOQ सीढ़ी से सुझाई मात्रा निकालता है (R0) → replenish.plan पंक्तियों को स्टॉकआउट जोखिम क्रम में प्रति-स्टोर योजना में समेटता है (R0) → replenish.export $DSH_HOME/dsh-store-replenish/exports/ में 13 कॉलम वाली पुनःपूर्ति CSV लिखता है (R1); स्रोत CSV केवल पढ़ने योग्य रहती है और कुछ भी बाहर नहीं जाता">
+</picture>
 
 ## तीन चरणों में शुरुआत
 
@@ -356,7 +361,7 @@ node samples/quickstart/run.mjs --check  # कृत्रिम नमूना
 
 TypeScript सोर्स `src/` में है (`src/core/` में CSV पार्सिंग, पुनःपूर्ति गणना, MOQ पूर्णांकन, पूर्णांक-पैसे धन, निर्यात और पथ सुरक्षा; `src/plugin/` में होस्ट सतह और टूल पंजीकरण), बिल्ड आउटपुट `lib/` में; साथ आया नमूना `samples/quickstart/` में। मौजूदा संस्करण `0.1.0` (`package.json` के अनुरूप)। टेस्ट `node --test test/*.test.mjs` से चलते हैं; सार्वजनिक नमूना न होने पर skip सामान्य है, विफलता नहीं।
 
-शीर्ष आरेख [`scripts/gen-readme-assets.py`](scripts/gen-readme-assets.py) से प्रोग्रामेटिक रूप से बनता है (Python + Pillow; CJK फ़ॉन्ट न मिले तो स्पष्ट त्रुटि के साथ रुकता है): `python scripts/gen-readme-assets.py` दोबारा चलाया जा सकता है और `docs/assets/dsh-store-replenish-flow-{light,dark}.svg` लिखता है। इस रेपो में कोई benchmark डेटासेट नहीं है, इसलिए evidence ग्राफ़ नहीं है।
+शीर्ष बैनर और संरचना आरेख दोनों [`scripts/gen-readme-assets.py`](scripts/gen-readme-assets.py) से प्रोग्रामेटिक रूप से बनते हैं (बैनर Python + Pillow से रेंडर होने वाला 1440×576 webp है, आरेख हाथ से लिखा SVG है; CJK फ़ॉन्ट न मिले तो स्क्रिप्ट स्पष्ट त्रुटि के साथ रुकती है): `python scripts/gen-readme-assets.py` दोबारा चलाया जा सकता है और `docs/assets/dsh-store-replenish-hero-{zh,en}-{light,dark}.webp` तथा `docs/assets/dsh-store-replenish-flow-v5-{light,dark}.svg` लिखता है। आरेखों की हर संख्या `samples/quickstart/expected/result.json` से पढ़ी जाती है, इसलिए वे गोल्डन फ़ाइल से अलग नहीं हो सकतीं। इस रेपो में कोई benchmark डेटासेट नहीं है, इसलिए evidence ग्राफ़ नहीं है।
 
 Topics: `deepseek-harness`, `dsh`, `dsh-plugin`, `retail`, `replenishment`, `inventory`, `stockout`, `store-ops`, `csv`, `perrylink`
 

@@ -1,8 +1,8 @@
 <div align="center">
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/dsh-store-replenish-flow-dark.svg">
-  <img src="docs/assets/dsh-store-replenish-flow-light.svg" width="100%" alt="Fluxo de dados do dsh-store-replenish: um CSV de vendas e estoque por loja-SKU → replenish.suggest (média diária × (dias de ciclo + dias de segurança) − estoque − em trânsito, arredondada para cima até o MOQ) → replenish.plan (agregação por loja ordenada por risco de ruptura) → replenish.export (CSV de reposição em $DSH_HOME/dsh-store-replenish/exports/); sem rede em momento algum">
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/dsh-store-replenish-hero-en-dark.webp">
+  <img src="docs/assets/dsh-store-replenish-hero-en-light.webp" width="100%" alt="Banner do dsh-store-replenish: uma linha loja-SKU (Shanghai Jing'an, SKU-SN-001: média 10, estoque 20, trânsito 10, MOQ 24) medida numa régua de nível de estoque até a meta de 100, com 30 disponíveis e lacuna de 70, e então empacotada numa escada de MOQ de 3 pacotes de 24, resultando em 72 unidades sugeridas e valor estimado de 928,80">
 </picture>
 
 # dsh-store-replenish
@@ -37,6 +37,11 @@ Lê o CSV de vendas e estoque por loja-SKU indicado pelo usuário e calcula uma 
 
 - **Serve:** de dezenas a milhares de combinações loja-SKU; fixar uma regra auditável para média diária, estoque, trânsito, dias de segurança, dias de ciclo e MOQ; contagens por loja, unidades totais e valor estimado; decidir a ordem de reposição pelo risco de ruptura; uma lista de reposição para o responsável da loja, o comprador ou o armazém revisar.
 - **Não serve:** emitir pedidos de compra, transferências ou integração com ERP/POS/WMS; multiarmazém, multimoeada, impostos ou preços com imposto; promoções, sazonalidade, validade, lotes ou vencimento; EOQ, custo de carregamento, nível de serviço ou otimização de estoque de segurança (os dias de segurança são uma entrada); ler Excel/PDF/imagens diretamente (exporte antes para CSV); tratar a sugestão como compromisso de compra.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/dsh-store-replenish-flow-v5-dark.svg">
+  <img src="docs/assets/dsh-store-replenish-flow-v5-light.svg" width="100%" alt="Estrutura do dsh-store-replenish: um CSV de vendas e estoque por loja-SKU de 10 colunas (16 linhas) → replenish.suggest mede meta, disponível e lacuna por linha numa régua de nível de estoque e arredonda a lacuna pela escada de MOQ (R0) → replenish.plan agrega as linhas em planos por loja ordenados por risco de ruptura (R0) → replenish.export grava um CSV de reposição de 13 colunas em $DSH_HOME/dsh-store-replenish/exports/ (R1); o CSV de origem é somente leitura e nada sai da máquina">
+</picture>
 
 ## Instalação em três passos
 
@@ -356,7 +361,7 @@ node samples/quickstart/run.mjs --check  # amostra sintética, deve imprimir qui
 
 O código TypeScript está em `src/` (`src/core/` concentra parsing de CSV, cálculo de reposição, arredondamento ao MOQ, dinheiro em centavos inteiros, exportação e segurança de caminho; `src/plugin/` concentra a face do host e o registro de ferramentas); a compilação sai em `lib/`; a amostra incluída está em `samples/quickstart/`. Versão atual `0.1.0` (igual ao `package.json`). Os testes rodam com `node --test test/*.test.mjs`; skips por falta de amostra pública são normais, não falhas.
 
-O diagrama de cabeçalho é gerado por [`scripts/gen-readme-assets.py`](scripts/gen-readme-assets.py) (Python + Pillow; aborta com erro claro se não achar fonte CJK): `python scripts/gen-readme-assets.py` pode ser repetido e grava `docs/assets/dsh-store-replenish-flow-{light,dark}.svg`. Este repositório não traz um conjunto de benchmark, então não há gráfico de evidência.
+O banner de cabeçalho e o diagrama de estrutura são gerados por [`scripts/gen-readme-assets.py`](scripts/gen-readme-assets.py) (o banner é um webp de 1440×576 renderizado com Python + Pillow e o diagrama é SVG escrito à mão; se faltar fonte CJK o script aborta com erro claro): `python scripts/gen-readme-assets.py` pode ser repetido e grava `docs/assets/dsh-store-replenish-hero-{zh,en}-{light,dark}.webp` e `docs/assets/dsh-store-replenish-flow-v5-{light,dark}.svg`. Todos os números das figuras são lidos de `samples/quickstart/expected/result.json`, então não divergem do arquivo dourado. Este repositório não traz um conjunto de benchmark, então não há gráfico de evidência.
 
 Topics: `deepseek-harness`, `dsh`, `dsh-plugin`, `retail`, `replenishment`, `inventory`, `stockout`, `store-ops`, `csv`, `perrylink`
 
