@@ -51,10 +51,6 @@ for (const entry of [
   'TROUBLESHOOTING.md',
   'screenshots.json',
   'README.md',
-  'README-zh.md',
-  'README-es.md',
-  'README-pt.md',
-  'README-hi.md',
   'LICENSE',
   'NOTICE',
   'THIRD-PARTY-NOTICES',
@@ -64,34 +60,34 @@ for (const entry of [
   check(files.includes(entry), `files[] must include ${entry}`)
 }
 
-const readmeZh = read('README-zh.md')
-const readme = read('README.md')
+const readmeZh = read('README.md')
+const readme = read('README.en.md')
 const troubleshooting = read('TROUBLESHOOTING.md')
 for (const [label, textValue, patterns] of [
   [
-    'README-zh',
+    'README',
     readmeZh,
     [
-      /一句话/,
+      /它是什么/,
       /适合[\s\S]*不适合/,
-      /## 输入/,
-      /## 输出/,
-      /## 示例/,
-      /## 权限/,
+      /### 输入/,
+      /### 输出/,
+      /### 示例/,
+      /## 安全边界/,
       /^#{2,3}\s*FAQ/m,
       new RegExp(pkg.version.replace(/\./g, '\\.')),
     ],
   ],
   [
-    'README',
+    'README.en',
     readme,
     [
-      /One-liner/i,
+      /What it is/i,
       /Fit/i,
-      /## Input/i,
-      /## Output/i,
-      /## Example/i,
-      /## Permissions/i,
+      /### Input/i,
+      /### Output/i,
+      /### Examples/i,
+      /## Permissions & data/i,
       /FAQ/i,
       new RegExp(pkg.version.replace(/\./g, '\\.')),
     ],
@@ -100,18 +96,18 @@ for (const [label, textValue, patterns] of [
   for (const pattern of patterns) check(pattern.test(textValue), `${label} is missing section matching ${pattern}`)
 }
 for (const pattern of [/读[:：]/, /写[:：]/, /联网[:：]/, /外部系统[:：]/]) {
-  check(pattern.test(readmeZh), `README-zh must declare ${pattern}`)
+  check(pattern.test(readmeZh), `README must declare ${pattern}`)
 }
-check(demo?.prompt && readmeZh.includes(demo.prompt.slice(0, 12)), 'README-zh must contain dsh.demo.prompt')
-check(/R0/.test(readmeZh) && /R1/.test(readmeZh), 'README-zh must mark R0/R1 risk levels')
-check(readme.includes(demo?.prompt?.slice(0, 12) ?? 'x'), 'README must contain the demo prompt')
+check(demo?.prompt && readmeZh.includes(demo.prompt.slice(0, 12)), 'README must contain dsh.demo.prompt')
+check(/R0/.test(readmeZh) && /R1/.test(readmeZh), 'README must mark R0/R1 risk levels')
+check(readme.includes(demo?.prompt?.slice(0, 12) ?? 'x'), 'README.en must contain the demo prompt')
 
-for (const name of ['README-es.md', 'README-pt.md', 'README-hi.md']) {
+for (const name of ['README.es.md', 'README.pt.md', 'README.hi.md']) {
   const textValue = read(name)
   check(textValue.includes('dsh-store-replenish'), `${name} must name the package`)
   check(textValue.length > 300, `${name} looks too short`)
 }
-check(/Apache-2\.0/.test(read('README-es.md')), 'README-es must carry the license line')
+check(/Apache-2\.0/.test(read('README.es.md')), 'README.es must carry the license line')
 
 const REQUIRED_CODES = ['E_REPL_QTY', 'E_REPL_CSV_ROW', 'E_REPL_EMPTY', 'E_REPL_PATH_INVALID']
 const troubleCodes = new Set([...troubleshooting.matchAll(/\bE_REPL_[A-Z0-9_]+\b/g)].map((match) => match[0]))
