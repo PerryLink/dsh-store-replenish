@@ -7,7 +7,7 @@
 
 - **症状**：`数量、天数、起订量或单价不是非负整数，或起订量为 0（E_REPL_QTY）｜下一步：把销量/库存/在途/安全天数/补货周期/起订量/单价都填成整数，起订量至少 1｜细节：第 7 行当前库存："-3" 不是非负整数`
 - **原因**：库存盘点差异被写成负数、销量填了 `12.5`、单价填了元而不是分，或空单元格被当成数字。
-- **动作**：按报错行号把该列改成非负整数；库存差异先在源系统调账，不要用负数表示；单价统一填整数**分**（12.90 元 → 1290）。改完重跑 `replenish.suggest`。
+- **动作**：按报错行号把该列改成非负整数；库存差异先在源系统调账，不要用负数表示；单价统一填整数**分**（12.90 元 → 1290）。改完重跑 `replenish_suggest`。
 
 ## 2. 起订量、天数或窗口越界（E_REPL_QTY）
 
@@ -43,13 +43,13 @@
 
 - **症状**：`...E_REPL_EMPTY...｜细节：没有需要补货的 SKU；要导出全部 SKU 请传 include_zero=true`
 - **原因**：所有 SKU 的库存加在途都已覆盖目标库存（建议量为 0），默认导出只写建议量 > 0 的行。
-- **动作**：用 `replenish.plan` 看 `order_lines` 是否为 0；如果只是想复核“为什么没补”，给 `replenish.export` 传 `include_zero=true`，会写出全部 SKU（建议量 0、滞销标记等）。
+- **动作**：用 `replenish_plan` 看 `order_lines` 是否为 0；如果只是想复核“为什么没补”，给 `replenish_export` 传 `include_zero=true`，会写出全部 SKU（建议量 0、滞销标记等）。
 
 ## 8. 输入路径读不了（E_REPL_PATH_INVALID）
 
 - **症状**：`文件路径或导出文件名不可用（E_REPL_PATH_INVALID）｜下一步：传一个存在的 CSV 文件；导出时只传 [A-Za-z0-9._-] 组成的文件名｜细节：找不到 "/data/store.csv"，或当前用户读不到`
 - **原因**：路径拼错、文件已移动、传了目录，或当前进程没有读权限。
-- **动作**：用绝对路径确认文件存在且是普通文件、当前用户可读；不要把目录当文件传。确认后重跑 `replenish.suggest`。
+- **动作**：用绝对路径确认文件存在且是普通文件、当前用户可读；不要把目录当文件传。确认后重跑 `replenish_suggest`。
 
 ## 9. 导出文件名不安全（E_REPL_PATH_INVALID）
 
@@ -61,7 +61,7 @@
 
 - **症状**：没有报错，但某个 SKU 的建议量和手工算的差一箱，或某个 SKU 没有被标滞销/缺货风险。
 - **原因**：① 建议量向上取整到起订量：缺口 70、MOQ 24 → 72；② 日均销量用 `sales_qty / window_days`，窗口不是 30 时结果会变；③ 滞销看的是**当前库存 / 日均**是否 > 60 天，不看在途；④ 缺货风险看 `当前库存 + 在途 < 日均 × 补货周期`，相等时不算风险；⑤ `stockout_now` 只看当前库存是否为 0。
-- **动作**：用 `replenish.suggest` 的逐 SKU 字段核对：`daily_avg`、`target_qty`、`raw_qty`、`moq`、`suggested_qty`、`turnover_days`、`cover_days`、`stockout_risk`。如果仍不一致，附上脱敏后的两行输入和完整输出。
+- **动作**：用 `replenish_suggest` 的逐 SKU 字段核对：`daily_avg`、`target_qty`、`raw_qty`、`moq`、`suggested_qty`、`turnover_days`、`cover_days`、`stockout_risk`。如果仍不一致，附上脱敏后的两行输入和完整输出。
 
 ## 11. 生成了 CSV 但担心联网或改文件
 
@@ -78,4 +78,4 @@ node scripts/gate.mjs                     # 元数据 + 验收门
 ```
 
 仍失败时请在 <https://github.com/PerryLink/dsh-store-replenish/issues> 附上：包版本、最小合成 CSV（或生成脚本）、
-`replenish.suggest` / `replenish.plan` / `replenish.export` 的完整报错行、Node 与 DSH 版本。**不要附真实门店、商品或销售明细。**
+`replenish_suggest` / `replenish_plan` / `replenish_export` 的完整报错行、Node 与 DSH 版本。**不要附真实门店、商品或销售明细。**

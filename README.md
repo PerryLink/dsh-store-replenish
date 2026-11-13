@@ -40,7 +40,7 @@ dsh plugin --profile <profile> add dsh-store-replenish
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/dsh-store-replenish-flow-v5-dark.svg">
-  <img src="docs/assets/dsh-store-replenish-flow-v5-light.svg" width="100%" alt="dsh-store-replenish 结构：10 列门店-SKU 销售库存 CSV（16 行）→ replenish.suggest 逐行在库存量尺上量出目标、可用与缺口，再沿起订量阶梯取整成建议量（R0）→ replenish.plan 汇总成按缺货风险排序的门店补货单（R0）→ replenish.export 写成固定 13 列的补货 CSV 落到 $DSH_HOME/dsh-store-replenish/exports/（R1）；源 CSV 只读、全程不联网">
+  <img src="docs/assets/dsh-store-replenish-flow-v5-light.svg" width="100%" alt="dsh-store-replenish 结构：10 列门店-SKU 销售库存 CSV（16 行）→ replenish_suggest 逐行在库存量尺上量出目标、可用与缺口，再沿起订量阶梯取整成建议量（R0）→ replenish_plan 汇总成按缺货风险排序的门店补货单（R0）→ replenish_export 写成固定 13 列的补货 CSV 落到 $DSH_HOME/dsh-store-replenish/exports/（R1）；源 CSV 只读、全程不联网">
 </picture>
 
 ## 三步上手
@@ -91,9 +91,9 @@ dsh plugin --profile <profile> add dsh-store-replenish
 
 ## 核心能力
 
-- **按 SKU 的建议补货量** —— `replenish.suggest` 读门店-SKU 销售库存 CSV，按日均销量、补货周期、安全天数、当前库存、在途与起订量算出每个门店-SKU 的建议补货量，并给出日均销量、可用天数、周转天数、目标量、缺口、预估金额与三个标记。
-- **按门店的补货单** —— `replenish.plan` 把建议汇总成每店一张单：SKU 数、补货行数、总件数、预估金额、缺货风险数与滞销数，门店按缺货风险排序，且保留每个 SKU 的明细。
-- **可复核的本地 CSV** —— `replenish.export` 把补货单写成固定 13 列的 CSV 到 `$DSH_HOME/dsh-store-replenish/exports/`，返回路径、`sha256`、字节数与行数；默认只写建议量 > 0 的 SKU。
+- **按 SKU 的建议补货量** —— `replenish_suggest` 读门店-SKU 销售库存 CSV，按日均销量、补货周期、安全天数、当前库存、在途与起订量算出每个门店-SKU 的建议补货量，并给出日均销量、可用天数、周转天数、目标量、缺口、预估金额与三个标记。
+- **按门店的补货单** —— `replenish_plan` 把建议汇总成每店一张单：SKU 数、补货行数、总件数、预估金额、缺货风险数与滞销数，门店按缺货风险排序，且保留每个 SKU 的明细。
+- **可复核的本地 CSV** —— `replenish_export` 把补货单写成固定 13 列的 CSV 到 `$DSH_HOME/dsh-store-replenish/exports/`，返回路径、`sha256`、字节数与行数；默认只写建议量 > 0 的 SKU。
 - **滞销与缺货风险标记** —— 周转超过 60 天标 `slow_moving`；库存 + 在途撑不到下一次补货标 `stockout_risk`；库存已经是 0 且仍有销量标 `stockout_now`。
 - **稳定排序** —— 门店与 SKU 的次序完全由规则决定（风险 → 金额 → 名称 / SKU），同一份输入每次得到同一份输出，便于复核与存档。
 - **整数口径** —— 件数是整数，金额是整数分；MOQ 取整用整数分子/分母，正好整倍的情形不会被浮点误差多推一档。
@@ -105,9 +105,9 @@ dsh plugin --profile <profile> add dsh-store-replenish
 
 | 工具 | 用途 | 风险 |
 |---|---|---|
-| `replenish.suggest` | 读取门店-SKU 销售库存 CSV，按日均销量、补货周期、安全天数、库存、在途和 MOQ 算每个 SKU 的建议补货量，并标记滞销与缺货风险 | R0 只读 |
-| `replenish.plan` | 按门店汇总补货单（SKU 数、补货行数、总件数、预估金额、风险数），按缺货风险排序 | R0 只读 |
-| `replenish.export` | 导出补货单 CSV（门店/SKU/品名/库存/在途/日均/周期/安全天数/建议量/金额/风险/滞销/周转），返回路径与 sha256 | R1 本地写 |
+| `replenish_suggest` | 读取门店-SKU 销售库存 CSV，按日均销量、补货周期、安全天数、库存、在途和 MOQ 算每个 SKU 的建议补货量，并标记滞销与缺货风险 | R0 只读 |
+| `replenish_plan` | 按门店汇总补货单（SKU 数、补货行数、总件数、预估金额、风险数），按缺货风险排序 | R0 只读 |
+| `replenish_export` | 导出补货单 CSV（门店/SKU/品名/库存/在途/日均/周期/安全天数/建议量/金额/风险/滞销/周转），返回路径与 sha256 | R1 本地写 |
 
 ### 输入
 
@@ -120,9 +120,9 @@ dsh plugin --profile <profile> add dsh-store-replenish
 
 ### 输出
 
-- **`replenish.suggest`**：`{ window_days, source_sha256, totals, items }`。每个 SKU 有日均销量、可用天数、周转天数、目标量、缺口、建议补货量、预估金额，以及 `slow_moving`、`stockout_risk`、`stockout_now` 三个标记。`items` 按门店、风险、建议量、SKU 稳定排序。
-- **`replenish.plan`**：`{ window_days, source_sha256, totals, stores }`。按门店汇总 `sku_count`（该店 SKU 数）、`order_lines`（需要补货的 SKU 数）、`total_units`（总件数）、`estimated_value_cents`（预估金额分）、缺货风险数、滞销数、`risk_level`（high/medium/low）；门店按缺货风险排序，并保留每个 SKU 的明细。
-- **`replenish.export`**：把补货单写成 CSV 到 `$DSH_HOME/dsh-store-replenish/exports/`，列固定为 `门店,SKU,品名,当前库存,在途,日均销量,补货周期天数,安全天数,建议补货量,预估金额,缺货风险,滞销,周转天数`；返回路径、`sha256`、字节数和行数。默认只导出建议量 > 0 的 SKU；`include_zero=true` 时追加其余 SKU，便于复核「为什么没补」。
+- **`replenish_suggest`**：`{ window_days, source_sha256, totals, items }`。每个 SKU 有日均销量、可用天数、周转天数、目标量、缺口、建议补货量、预估金额，以及 `slow_moving`、`stockout_risk`、`stockout_now` 三个标记。`items` 按门店、风险、建议量、SKU 稳定排序。
+- **`replenish_plan`**：`{ window_days, source_sha256, totals, stores }`。按门店汇总 `sku_count`（该店 SKU 数）、`order_lines`（需要补货的 SKU 数）、`total_units`（总件数）、`estimated_value_cents`（预估金额分）、缺货风险数、滞销数、`risk_level`（high/medium/low）；门店按缺货风险排序，并保留每个 SKU 的明细。
+- **`replenish_export`**：把补货单写成 CSV 到 `$DSH_HOME/dsh-store-replenish/exports/`，列固定为 `门店,SKU,品名,当前库存,在途,日均销量,补货周期天数,安全天数,建议补货量,预估金额,缺货风险,滞销,周转天数`；返回路径、`sha256`、字节数和行数。默认只导出建议量 > 0 的 SKU；`include_zero=true` 时追加其余 SKU，便于复核「为什么没补」。
 
 ### 规则
 
@@ -135,7 +135,7 @@ dsh plugin --profile <profile> add dsh-store-replenish
 7. 门店排序：`stockout_now` 数降序 → 缺货风险数降序 → 预估金额降序 → 门店名升序。缺货风险优先于金额，所以金额更小的门店也可能排在前面。
 8. 门店内排序：`stockout_now` → 缺货风险 → 需要补货 → 滞销 → 其他；同档按建议量降序、SKU 升序。
 9. 预估金额 = `建议补货量 × 单价分`；CSV 里格式化为两位小数，API 里仍是整数分。
-10. `replenish.export` 默认只写建议量 > 0 的 SKU；若一行都没有则报 `E_REPL_EMPTY`，传 `include_zero=true` 可导出全量 SKU（此时建议量为 0 的行也写入，`order_lines` 仍只数建议量 > 0 的行）。
+10. `replenish_export` 默认只写建议量 > 0 的 SKU；若一行都没有则报 `E_REPL_EMPTY`，传 `include_zero=true` 可导出全量 SKU（此时建议量为 0 的行也写入，`order_lines` 仍只数建议量 > 0 的行）。
 
 ### 示例
 
@@ -155,7 +155,7 @@ node samples/quickstart/run.mjs --check
 
 样例是 16 行合成数据（2 家门店 × 8 个 SKU），含 1 个滞销 SKU（成都高新店 `抑菌洗手液 500ml`，周转 100 天）和 2 个缺货风险 SKU（上海静安店 `苏打饼干 400g`、`鲜牛奶 950ml`）。样例同时覆盖 MOQ 正好整倍（`每日坚果` 12 → 12）与非整倍（`苏打饼干` 70 → 72）、缺口正好为 0（上海 `成猫粮`）和完全无销量（成都 `抑菌洗手液`）。金标 `samples/quickstart/expected/result.json` 由 `node samples/quickstart/run.mjs --json` 真实产生，不是手写；截图是 `--check` 的真实终端输出，命令与输出哈希记录在 `screenshots.json`。
 
-*Observed from `src/plugin/tools.ts:159-168`（`replenish.suggest` 的渲染行）与 `docs/assets/quickstart.log`*
+*Observed from `src/plugin/tools.ts:159-168`（`replenish_suggest` 的渲染行）与 `docs/assets/quickstart.log`*
 
 ## 实测数据
 
@@ -205,8 +205,8 @@ PS1-QS01,quickstart golden,1/1,1,true,synthetic/quickstart,true
 |---|---|---|---|
 | `path` | 必填 | 三个工具 | 用户指定的门店-SKU 销售库存 CSV 路径；只读，不会被改写 |
 | `window_days` | `30` | 三个工具 | `sales_qty` 代表多少天的累计销量，1–3650；超范围 `E_REPL_QTY` |
-| `filename` | `replenish-<window_days>d.csv` | `replenish.export` | 导出文件名，必须匹配 `^[A-Za-z0-9._-]{1,120}$`，且解析后必须落在 `exports/` 内 |
-| `include_zero` | `false` | `replenish.export` | `true` 时把建议量为 0 的 SKU 也写进补货单，便于复核「为什么没补」 |
+| `filename` | `replenish-<window_days>d.csv` | `replenish_export` | 导出文件名，必须匹配 `^[A-Za-z0-9._-]{1,120}$`，且解析后必须落在 `exports/` 内 |
+| `include_zero` | `false` | `replenish_export` | `true` 时把建议量为 0 的 SKU 也写进补货单，便于复核「为什么没补」 |
 
 <details>
 <summary>错误码与故障排查</summary>
@@ -288,7 +288,7 @@ PS1-QS01,quickstart golden,1/1,1,true,synthetic/quickstart,true
 - 写：`$DSH_HOME/dsh-store-replenish/exports/`（补货单 CSV）；不改原 CSV。
 - 联网：否。
 - 外部系统：无。
-- **风险等级**：`replenish.suggest` 与 `replenish.plan` 标 **R0**（只读）；`replenish.export` 标 **R1**（本地写，只写 `exports/`）。测试可用 `DSH_STORE_REPLENISH_HOME` 覆盖本地写根目录，默认严格等于 `$DSH_HOME/dsh-store-replenish`。
+- **风险等级**：`replenish_suggest` 与 `replenish_plan` 标 **R0**（只读）；`replenish_export` 标 **R1**（本地写，只写 `exports/`）。测试可用 `DSH_STORE_REPLENISH_HOME` 覆盖本地写根目录，默认严格等于 `$DSH_HOME/dsh-store-replenish`。
 - **数据边界**：仅公开 / 合成样例；不含门店数据、商品数据或销售证据。
 
 ## 已知限制
@@ -308,7 +308,7 @@ PS1-QS01,quickstart golden,1/1,1,true,synthetic/quickstart,true
 
 本插件**不干扰**其他插件：
 
-- **工具名带命名空间。** 三个工具都在 `replenish.*` 下，不占用内置工具或其他插件的裸名。
+- **工具名带命名空间。** 三个工具都在 `replenish_*` 下，不占用内置工具或其他插件的裸名。
 - **不抢宿主表面。** 不注册命令、客户端 slot、`webServer` 路由或服务键；`inject` 只有 `tools`，工具存在与否都按宿主契约判断。
 - **patch 层只 `insert`。** `cordis.patch.yml` 只插入自己那一行，从不覆写内置行的 `config`。
 - **无全局改写。** 不改原型、不替换全局 fetch dispatcher；只读取 `DSH_HOME` 与 `DSH_STORE_REPLENISH_HOME` 两个环境变量。
@@ -343,7 +343,7 @@ node scripts/gate.mjs                    # lint + acceptance + ACCEPTANCE.csv �
 node samples/quickstart/run.mjs --check  # 合成样例，应输出 quickstart ok
 ```
 
-TypeScript 源码在 `src/`（`src/core/` 负责 CSV 解析、补货计算、MOQ 取整、整数分金额、导出与路径安全；`src/plugin/` 负责宿主面与工具注册），构建产物在 `lib/`；随包样例在 `samples/quickstart/`。当前版本 `0.1.0`（与 `package.json` 一致）。测试用 `node --test test/*.test.mjs`；公开样本缺失导致的 skip 属正常，不是失败。
+TypeScript 源码在 `src/`（`src/core/` 负责 CSV 解析、补货计算、MOQ 取整、整数分金额、导出与路径安全；`src/plugin/` 负责宿主面与工具注册），构建产物在 `lib/`；随包样例在 `samples/quickstart/`。当前版本 `0.2.0`（与 `package.json` 一致）。测试用 `node --test test/*.test.mjs`；公开样本缺失导致的 skip 属正常，不是失败。
 
 开头 hero 与结构图都由 [`scripts/gen-readme-assets.py`](scripts/gen-readme-assets.py) 程序化生成（hero 用 Python + Pillow 渲染成 1440×576 的 webp，结构图是手写 SVG，缺 CJK 字体会直接报错退出）：`python scripts/gen-readme-assets.py` 可重复执行，输出 `docs/assets/dsh-store-replenish-hero-{zh,en}-{light,dark}.webp` 与 `docs/assets/dsh-store-replenish-flow-v5-{light,dark}.svg`；图里的数字直接读 `samples/quickstart/expected/result.json`，不会和金标漂移。本仓没有 benchmark 数据集，因此不画 evidence 图。
 

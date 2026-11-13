@@ -28,7 +28,7 @@ test('the same SKU in two stores produces two independent order lines', async (t
     row({ store: 'A 店', sku: 'SKU-X', sales: 600, stock: 0, transit: 0, safety: 0, cycle: 7, moq: 1 }),
   ])
   const tools = toolMap(path.join(dir, 'store'))
-  const plan = await tools['replenish.plan'].execute({ path: file }, exec)
+  const plan = await tools['replenish_plan'].execute({ path: file }, exec)
   assert.deepEqual(plan.stores.map((store) => store.total_units), [140, 70])
   assert.equal(plan.totals.unique_skus, 1)
   assert.equal(plan.totals.order_lines, 2)
@@ -41,7 +41,7 @@ test('equal risk and quantity tie-break on SKU ascending', async (t) => {
     row({ sku: 'SKU-B', sales: 300, stock: 0, transit: 0, safety: 0, cycle: 7, moq: 1 }),
     row({ sku: 'SKU-A', sales: 300, stock: 0, transit: 0, safety: 0, cycle: 7, moq: 1 }),
   ])
-  const suggest = await tools['replenish.suggest'].execute({ path: file }, exec)
+  const suggest = await tools['replenish_suggest'].execute({ path: file }, exec)
   assert.deepEqual(suggest.items.map((item) => item.sku), ['SKU-A', 'SKU-B'])
 })
 
@@ -52,7 +52,7 @@ test('equal store risk and amount tie-break on store name ascending', async (t) 
     row({ store: 'A 店', sku: 'SKU-1', sales: 300, stock: 0, transit: 0, safety: 0, cycle: 7, moq: 1 }),
   ])
   const tools = toolMap(path.join(dir, 'store'))
-  const plan = await tools['replenish.plan'].execute({ path: file }, exec)
+  const plan = await tools['replenish_plan'].execute({ path: file }, exec)
   assert.deepEqual(plan.stores.map((store) => store.store), ['A 店', 'B 店'])
 })
 
@@ -70,7 +70,7 @@ test('very large but safe quantities stay exact multiples of MOQ', async (t) => 
     }),
   ])
   const tools = toolMap(path.join(dir, 'store'))
-  const result = await tools['replenish.suggest'].execute({ path: file, window_days: 1 }, exec)
+  const result = await tools['replenish_suggest'].execute({ path: file, window_days: 1 }, exec)
   const item = result.items[0]
   assert.ok(Number.isSafeInteger(item.suggested_qty))
   assert.equal(item.suggested_qty % item.moq, 0)
@@ -92,7 +92,7 @@ test('a quantity times price that overflows safe integers is E_REPL_QTY', async 
   ])
   const tools = toolMap(path.join(dir, 'store'))
   await assert.rejects(
-    () => tools['replenish.suggest'].execute({ path: file, window_days: 1 }, exec),
+    () => tools['replenish_suggest'].execute({ path: file, window_days: 1 }, exec),
     (error) => assertErrorCode(error, 'E_REPL_QTY'),
   )
 })
@@ -102,7 +102,7 @@ test('CRLF records and a BOM are accepted end to end', async (t) => {
   const text = `\ufeff${HEADER}\r\n${row({ store: '上海店', sku: 'SKU-1' })}\r\n`
   const file = await writeTextFile(dir, 'crlf.csv', text)
   const tools = toolMap(path.join(dir, 'store'))
-  const result = await tools['replenish.suggest'].execute({ path: file }, exec)
+  const result = await tools['replenish_suggest'].execute({ path: file }, exec)
   assert.equal(result.items.length, 1)
   assert.equal(result.items[0].store, '上海店')
   assert.equal(result.items[0].suggested_qty, 72)
@@ -115,13 +115,13 @@ test('all zero demand across stores yields an empty order and low risk', async (
     row({ store: 'B 店', sku: 'SKU-2', sales: 0, stock: 0, transit: 0 }),
   ])
   const tools = toolMap(path.join(dir, 'store'))
-  const plan = await tools['replenish.plan'].execute({ path: file }, exec)
+  const plan = await tools['replenish_plan'].execute({ path: file }, exec)
   assert.equal(plan.totals.order_lines, 0)
   assert.equal(plan.totals.total_units, 0)
   assert.equal(plan.totals.stockout_risks, 0)
   assert.deepEqual(plan.stores.map((store) => store.risk_level), ['low', 'low'])
   await assert.rejects(
-    () => tools['replenish.export'].execute({ path: file }, exec),
+    () => tools['replenish_export'].execute({ path: file }, exec),
     (error) => assertErrorCode(error, 'E_REPL_EMPTY'),
   )
 })
@@ -132,14 +132,14 @@ test('a 1-day window still computes an integer MOQ order', async (t) => {
     row({ sales: 5, stock: 0, transit: 0, safety: 0, cycle: 7, moq: 1 }),
   ])
   const tools = toolMap(path.join(dir, 'store'))
-  const result = await tools['replenish.suggest'].execute({ path: file, window_days: 1 }, exec)
+  const result = await tools['replenish_suggest'].execute({ path: file, window_days: 1 }, exec)
   assert.equal(result.items[0].daily_avg, 5)
   assert.equal(result.items[0].suggested_qty, 35)
 })
 
 test('include_zero keeps stores in risk order and all SKUs inside each store', async (t) => {
   const tools = await toolsWith(t)
-  const result = await tools['replenish.export'].execute(
+  const result = await tools['replenish_export'].execute(
     { path: samplePath, include_zero: true },
     exec,
   )
@@ -160,7 +160,7 @@ test('a row with only the name column missing still exports the SKU as the name'
     header,
   )
   const tools = toolMap(path.join(dir, 'store'))
-  const result = await tools['replenish.export'].execute({ path: file }, exec)
+  const result = await tools['replenish_export'].execute({ path: file }, exec)
   const parsed = parseCsv(await readFile(result.path, 'utf8'))
   assert.equal(parsed.rows[1][2], 'SKU-NO-NAME')
 })

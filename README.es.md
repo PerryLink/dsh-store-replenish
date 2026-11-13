@@ -40,7 +40,7 @@ Lee el CSV de ventas e inventario por tienda-SKU que indique el usuario y calcul
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/dsh-store-replenish-flow-v5-dark.svg">
-  <img src="docs/assets/dsh-store-replenish-flow-v5-light.svg" width="100%" alt="Estructura de dsh-store-replenish: un CSV de ventas e inventario por tienda-SKU de 10 columnas (16 filas) → replenish.suggest mide objetivo, disponible y hueco por fila en una regla de nivel de stock y redondea el hueco por la escalera de MOQ (R0) → replenish.plan agrega las filas en planes por tienda ordenados por riesgo de ruptura (R0) → replenish.export escribe un CSV de reposición de 13 columnas en $DSH_HOME/dsh-store-replenish/exports/ (R1); el CSV de origen es de solo lectura y nada sale del equipo">
+  <img src="docs/assets/dsh-store-replenish-flow-v5-light.svg" width="100%" alt="Estructura de dsh-store-replenish: un CSV de ventas e inventario por tienda-SKU de 10 columnas (16 filas) → replenish_suggest mide objetivo, disponible y hueco por fila en una regla de nivel de stock y redondea el hueco por la escalera de MOQ (R0) → replenish_plan agrega las filas en planes por tienda ordenados por riesgo de ruptura (R0) → replenish_export escribe un CSV de reposición de 13 columnas en $DSH_HOME/dsh-store-replenish/exports/ (R1); el CSV de origen es de solo lectura y nada sale del equipo">
 </picture>
 
 ## Instalación en tres pasos
@@ -91,9 +91,9 @@ Todos los plugins de PerryLink están en el mercado integrado de DSH Desktop: **
 
 ## Capacidades clave
 
-- **Sugerencias por SKU** — `replenish.suggest` lee el CSV tienda-SKU y calcula la cantidad sugerida de cada SKU a partir de la media diaria, los días de ciclo, los días de seguridad, las existencias, el tránsito y el MOQ, devolviendo media diaria, días de cobertura, días de rotación, cantidad objetivo, hueco, importe estimado y tres marcas.
-- **Pedidos por tienda** — `replenish.plan` agrega las sugerencias en un pedido por tienda: número de SKU, líneas de pedido, unidades totales, importe estimado, recuentos de riesgo y de baja rotación, ordenado por riesgo de ruptura y conservando el detalle de cada SKU.
-- **CSV local revisable** — `replenish.export` escribe el pedido como CSV de 13 columnas fijas en `$DSH_HOME/dsh-store-replenish/exports/` y devuelve ruta, `sha256`, bytes y recuentos de filas; por defecto solo escribe los SKU con cantidad sugerida positiva.
+- **Sugerencias por SKU** — `replenish_suggest` lee el CSV tienda-SKU y calcula la cantidad sugerida de cada SKU a partir de la media diaria, los días de ciclo, los días de seguridad, las existencias, el tránsito y el MOQ, devolviendo media diaria, días de cobertura, días de rotación, cantidad objetivo, hueco, importe estimado y tres marcas.
+- **Pedidos por tienda** — `replenish_plan` agrega las sugerencias en un pedido por tienda: número de SKU, líneas de pedido, unidades totales, importe estimado, recuentos de riesgo y de baja rotación, ordenado por riesgo de ruptura y conservando el detalle de cada SKU.
+- **CSV local revisable** — `replenish_export` escribe el pedido como CSV de 13 columnas fijas en `$DSH_HOME/dsh-store-replenish/exports/` y devuelve ruta, `sha256`, bytes y recuentos de filas; por defecto solo escribe los SKU con cantidad sugerida positiva.
 - **Marcas de baja rotación y ruptura** — rotación superior a 60 días activa `slow_moving`; existencias + tránsito que no cubren el siguiente ciclo activa `stockout_risk`; existencias ya en 0 con demanda activa `stockout_now`.
 - **Orden determinista** — el orden de tiendas y SKU está fijado por reglas (riesgo → importe → nombre / SKU), así que la misma entrada produce siempre la misma salida y se puede revisar o archivar.
 - **Aritmética entera** — las unidades son enteras y el dinero son céntimos enteros; el redondeo al MOQ usa numerador/denominador enteros, de modo que un múltiplo exacto nunca salta de tramo por un error de coma flotante.
@@ -105,9 +105,9 @@ Los nombres de las herramientas son API estable (se mantienen en inglés para co
 
 | Herramienta | Uso | Riesgo |
 |---|---|---|
-| `replenish.suggest` | Lee el CSV tienda-SKU y calcula la cantidad sugerida por SKU a partir de media diaria, días de ciclo, días de seguridad, existencias, tránsito y MOQ; marca baja rotación y riesgo de ruptura | R0 solo lectura |
-| `replenish.plan` | Agrega un pedido de reposición por tienda (número de SKU, líneas, unidades, importe estimado, recuentos de riesgo), ordenado por riesgo de ruptura | R0 solo lectura |
-| `replenish.export` | Escribe el CSV de reposición (tienda/SKU/nombre/existencias/tránsito/media/ciclo/seguridad/sugerido/importe/riesgo/baja rotación/rotación) y devuelve ruta + sha256 | R1 escritura local |
+| `replenish_suggest` | Lee el CSV tienda-SKU y calcula la cantidad sugerida por SKU a partir de media diaria, días de ciclo, días de seguridad, existencias, tránsito y MOQ; marca baja rotación y riesgo de ruptura | R0 solo lectura |
+| `replenish_plan` | Agrega un pedido de reposición por tienda (número de SKU, líneas, unidades, importe estimado, recuentos de riesgo), ordenado por riesgo de ruptura | R0 solo lectura |
+| `replenish_export` | Escribe el CSV de reposición (tienda/SKU/nombre/existencias/tránsito/media/ciclo/seguridad/sugerido/importe/riesgo/baja rotación/rotación) y devuelve ruta + sha256 | R1 escritura local |
 
 ### Entrada
 
@@ -126,9 +126,9 @@ store,sku,name,sales_qty,stock_qty,in_transit,safety_days,cycle_days,moq,unit_pr
 
 ### Salida
 
-- **`replenish.suggest`**: `{ window_days, source_sha256, totals, items }`. Cada SKU lleva media diaria, días de cobertura, días de rotación, cantidad objetivo, hueco bruto, cantidad sugerida, importe estimado y las marcas `slow_moving`, `stockout_risk` y `stockout_now`. Los elementos se ordenan de forma determinista por tienda, riesgo, cantidad y SKU.
-- **`replenish.plan`**: `{ window_days, source_sha256, totals, stores }`. Por tienda: `sku_count`, `order_lines`, `total_units`, `estimated_value_cents`, recuentos de riesgo y de baja rotación, y `risk_level` (high/medium/low). Las tiendas se ordenan por riesgo de ruptura y conservan el detalle de cada SKU.
-- **`replenish.export`**: escribe el pedido de reposición como CSV en `$DSH_HOME/dsh-store-replenish/exports/` con una cabecera fija de 13 columnas, y devuelve ruta, `sha256`, bytes y recuentos de filas. Por defecto solo escribe los SKU con cantidad sugerida positiva; `include_zero=true` añade el resto para revisión.
+- **`replenish_suggest`**: `{ window_days, source_sha256, totals, items }`. Cada SKU lleva media diaria, días de cobertura, días de rotación, cantidad objetivo, hueco bruto, cantidad sugerida, importe estimado y las marcas `slow_moving`, `stockout_risk` y `stockout_now`. Los elementos se ordenan de forma determinista por tienda, riesgo, cantidad y SKU.
+- **`replenish_plan`**: `{ window_days, source_sha256, totals, stores }`. Por tienda: `sku_count`, `order_lines`, `total_units`, `estimated_value_cents`, recuentos de riesgo y de baja rotación, y `risk_level` (high/medium/low). Las tiendas se ordenan por riesgo de ruptura y conservan el detalle de cada SKU.
+- **`replenish_export`**: escribe el pedido de reposición como CSV en `$DSH_HOME/dsh-store-replenish/exports/` con una cabecera fija de 13 columnas, y devuelve ruta, `sha256`, bytes y recuentos de filas. Por defecto solo escribe los SKU con cantidad sugerida positiva; `include_zero=true` añade el resto para revisión.
 
 ```text
 门店,SKU,品名,当前库存,在途,日均销量,补货周期天数,安全天数,建议补货量,预估金额,缺货风险,滞销,周转天数
@@ -145,7 +145,7 @@ store,sku,name,sales_qty,stock_qty,in_transit,safety_days,cycle_days,moq,unit_pr
 7. Orden de tiendas: recuento de `stockout_now` desc → recuento de riesgo desc → importe desc → nombre asc. El riesgo pesa más que el importe, así que una tienda más pequeña puede quedar primero.
 8. Orden dentro de la tienda: `stockout_now` → riesgo de ruptura → requiere reposición → baja rotación → otros; dentro del tramo, cantidad desc y luego SKU asc.
 9. Importe estimado = `cantidad sugerida × precio en céntimos`; la API devuelve céntimos enteros y el CSV muestra dos decimales.
-10. `replenish.export` solo escribe cantidades sugeridas positivas; si no hay ninguna fila así, lanza `E_REPL_EMPTY`. Con `include_zero=true` se escriben todos los SKU, mientras que `order_lines` sigue contando solo las filas positivas.
+10. `replenish_export` solo escribe cantidades sugeridas positivas; si no hay ninguna fila así, lanza `E_REPL_EMPTY`. Con `include_zero=true` se escriben todos los SKU, mientras que `order_lines` sigue contando solo las filas positivas.
 
 ### Ejemplos
 
@@ -165,7 +165,7 @@ node samples/quickstart/run.mjs --check
 
 La muestra son 16 filas sintéticas (2 tiendas × 8 SKU). Contiene un SKU de baja rotación (Chengdu, gel hidroalcohólico 500 ml, rotación 100 días) y dos SKU con riesgo de ruptura (Shanghai, galletas de soda 400 g y leche fresca 950 ml). También cubre un múltiplo exacto de MOQ (12 → 12), un no múltiplo (70 → 72), un hueco exactamente cero (Shanghai, pienso seco para gatos) y un SKU sin ventas (Chengdu, gel hidroalcohólico). El archivo de referencia `samples/quickstart/expected/result.json` es la salida real de `node samples/quickstart/run.mjs --json`, no está escrito a mano; la captura es la salida real de `--check` y los hashes del comando y de la salida están en `screenshots.json`.
 
-*Observed from `src/plugin/tools.ts:159-168` (la línea de render de `replenish.suggest`) y `docs/assets/quickstart.log`*
+*Observed from `src/plugin/tools.ts:159-168` (la línea de render de `replenish_suggest`) y `docs/assets/quickstart.log`*
 
 ## Datos medidos
 
@@ -215,8 +215,8 @@ Argumentos de herramienta más usados:
 |---|---|---|---|
 | `path` | obligatorio | las tres herramientas | Ruta del CSV tienda-SKU que indica el usuario; solo lectura, nunca se reescribe |
 | `window_days` | `30` | las tres herramientas | Cuántos días de demanda acumulada cubre `sales_qty`, 1–3650; fuera de rango es `E_REPL_QTY` |
-| `filename` | `replenish-<window_days>d.csv` | `replenish.export` | Nombre del archivo de exportación; debe coincidir con `^[A-Za-z0-9._-]{1,120}$` y resolverse dentro de `exports/` |
-| `include_zero` | `false` | `replenish.export` | `true` escribe también los SKU con sugerencia cero, para que se vea por qué no se pidió nada |
+| `filename` | `replenish-<window_days>d.csv` | `replenish_export` | Nombre del archivo de exportación; debe coincidir con `^[A-Za-z0-9._-]{1,120}$` y resolverse dentro de `exports/` |
+| `include_zero` | `false` | `replenish_export` | `true` escribe también los SKU con sugerencia cero, para que se vea por qué no se pidió nada |
 
 <details>
 <summary>Códigos de error y solución de problemas</summary>
@@ -304,7 +304,7 @@ No. Solo CSV; no emite pedidos de compra, no llama a ERP/POS/WMS y no envía men
 - **Escribe**: solo `$DSH_HOME/dsh-store-replenish/exports/` (CSV de reposición); el CSV de origen no se modifica.
 - **Red**: no.
 - **Sistemas externos**: ninguno.
-- **Niveles de riesgo**: `replenish.suggest` y `replenish.plan` son **R0** (solo lectura); `replenish.export` es **R1** (escritura local bajo `exports/`). `DSH_STORE_REPLENISH_HOME` permite cambiar la raíz de escritura local en pruebas; el valor por defecto es exactamente `$DSH_HOME/dsh-store-replenish`.
+- **Niveles de riesgo**: `replenish_suggest` y `replenish_plan` son **R0** (solo lectura); `replenish_export` es **R1** (escritura local bajo `exports/`). `DSH_STORE_REPLENISH_HOME` permite cambiar la raíz de escritura local en pruebas; el valor por defecto es exactamente `$DSH_HOME/dsh-store-replenish`.
 - **Frontera de datos**: solo muestras públicas/sintéticas; sin datos de tienda, de producto ni evidencia de ventas.
 
 ## Limitaciones conocidas
@@ -324,7 +324,7 @@ No. Solo CSV; no emite pedidos de compra, no llama a ERP/POS/WMS y no envía men
 
 Este plugin **no interfiere** con otros plugins:
 
-- **Nombres de herramienta con espacio de nombres.** Las tres viven bajo `replenish.*`; no registra ningún nombre desnudo de una herramienta integrada ni de otro plugin.
+- **Nombres de herramienta con espacio de nombres.** Las tres viven bajo `replenish_*`; no registra ningún nombre desnudo de una herramienta integrada ni de otro plugin.
 - **No ocupa superficie del host.** No registra comandos, slots de cliente, rutas `webServer` ni claves de servicio; `inject` es solo `tools` y la presencia de herramientas se decide por el contrato del host.
 - **La capa de patch solo `insert`a.** `cordis.patch.yml` inserta su propia fila y nunca sobrescribe el `config` de una fila integrada.
 - **Sin mutación global.** No parchea prototipos ni sustituye el dispatcher global de fetch; solo lee las variables `DSH_HOME` y `DSH_STORE_REPLENISH_HOME`.
@@ -359,7 +359,7 @@ node scripts/gate.mjs                    # lint + aceptación + cada fila de ACC
 node samples/quickstart/run.mjs --check  # muestra sintética, debe imprimir quickstart ok
 ```
 
-El código TypeScript está en `src/` (`src/core/` contiene el análisis de CSV, el cálculo de reposición, el redondeo al MOQ, el dinero en céntimos enteros, la exportación y la seguridad de rutas; `src/plugin/` contiene la cara del host y el registro de herramientas); la compilación sale a `lib/`; la muestra incluida está en `samples/quickstart/`. Versión actual `0.1.0` (coincide con `package.json`). Las pruebas se ejecutan con `node --test test/*.test.mjs`; los skip por falta de una muestra pública son normales, no fallos.
+El código TypeScript está en `src/` (`src/core/` contiene el análisis de CSV, el cálculo de reposición, el redondeo al MOQ, el dinero en céntimos enteros, la exportación y la seguridad de rutas; `src/plugin/` contiene la cara del host y el registro de herramientas); la compilación sale a `lib/`; la muestra incluida está en `samples/quickstart/`. Versión actual `0.2.0` (coincide con `package.json`). Las pruebas se ejecutan con `node --test test/*.test.mjs`; los skip por falta de una muestra pública son normales, no fallos.
 
 El banner de cabecera y el diagrama de estructura los genera [`scripts/gen-readme-assets.py`](scripts/gen-readme-assets.py) (el banner es un webp de 1440×576 renderizado con Python + Pillow y el diagrama es SVG escrito a mano; si falta una fuente CJK el script aborta con un error claro): `python scripts/gen-readme-assets.py` puede repetirse y escribe `docs/assets/dsh-store-replenish-hero-{zh,en}-{light,dark}.webp` y `docs/assets/dsh-store-replenish-flow-v5-{light,dark}.svg`. Todas las cifras de las figuras se leen de `samples/quickstart/expected/result.json`, así que no se desvían del archivo dorado. Este repositorio no incluye un conjunto de benchmark, así que no hay gráfico de evidencia.
 

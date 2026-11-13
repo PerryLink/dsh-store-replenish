@@ -27,7 +27,7 @@ async function setup(t) {
 
 test('the default export writes 11 order lines with the fixed 13-column header', async (t) => {
   const { baseDir, tools } = await setup(t)
-  const result = await tools['replenish.export'].execute({ path: samplePath, window_days: 30 }, exec)
+  const result = await tools['replenish_export'].execute({ path: samplePath, window_days: 30 }, exec)
   assert.equal(result.filename, 'replenish-30d.csv')
   assert.equal(defaultExportFilename(30), 'replenish-30d.csv')
   assert.equal(result.rows, 11)
@@ -80,7 +80,7 @@ test('the default export writes 11 order lines with the fixed 13-column header',
 
 test('include_zero=true exports all 16 SKUs and exposes the slow-moving row', async (t) => {
   const { tools } = await setup(t)
-  const result = await tools['replenish.export'].execute(
+  const result = await tools['replenish_export'].execute(
     { path: samplePath, window_days: 30, include_zero: true },
     exec,
   )
@@ -110,7 +110,7 @@ test('include_zero=true exports all 16 SKUs and exposes the slow-moving row', as
 
 test('a custom filename is honoured and the returned hash matches the file', async (t) => {
   const { baseDir, tools } = await setup(t)
-  const result = await tools['replenish.export'].execute(
+  const result = await tools['replenish_export'].execute(
     { path: samplePath, window_days: 30, filename: 'my-order.csv' },
     exec,
   )
@@ -124,7 +124,7 @@ test('the export rejects traversal, absolute paths and unsafe names', async (t) 
   const { tools } = await setup(t)
   for (const filename of ['../evil.csv', '../../evil.csv', '/tmp/evil.csv', 'a/b.csv', 'with space.csv', '补货单.csv']) {
     await assert.rejects(
-      () => tools['replenish.export'].execute({ path: samplePath, filename }, exec),
+      () => tools['replenish_export'].execute({ path: samplePath, filename }, exec),
       (error) => assertErrorCode(error, 'E_REPL_PATH_INVALID'),
       filename,
     )
@@ -133,8 +133,8 @@ test('the export rejects traversal, absolute paths and unsafe names', async (t) 
 
 test('a second export to the same file overwrites it deterministically', async (t) => {
   const { tools } = await setup(t)
-  const first = await tools['replenish.export'].execute({ path: samplePath }, exec)
-  const second = await tools['replenish.export'].execute({ path: samplePath }, exec)
+  const first = await tools['replenish_export'].execute({ path: samplePath }, exec)
+  const second = await tools['replenish_export'].execute({ path: samplePath }, exec)
   assert.equal(first.path, second.path)
   assert.equal(first.sha256, second.sha256)
   assert.equal(first.bytes, second.bytes)
@@ -142,7 +142,7 @@ test('a second export to the same file overwrites it deterministically', async (
 
 test('a 15-day window uses a 15d filename and more order lines', async (t) => {
   const { tools } = await setup(t)
-  const result = await tools['replenish.export'].execute({ path: samplePath, window_days: 15 }, exec)
+  const result = await tools['replenish_export'].execute({ path: samplePath, window_days: 15 }, exec)
   assert.equal(result.filename, 'replenish-15d.csv')
   assert.equal(result.rows, 14)
   assert.equal(result.total_units, 1774)
@@ -154,10 +154,10 @@ test('an all-covered dataset is E_REPL_EMPTY unless include_zero=true', async (t
     row({ sales: 300, stock: 500, transit: 0, safety: 0, cycle: 7, moq: 1 }),
   ])
   await assert.rejects(
-    () => tools['replenish.export'].execute({ path: file }, exec),
+    () => tools['replenish_export'].execute({ path: file }, exec),
     (error) => assertErrorCode(error, 'E_REPL_EMPTY'),
   )
-  const result = await tools['replenish.export'].execute({ path: file, include_zero: true }, exec)
+  const result = await tools['replenish_export'].execute({ path: file, include_zero: true }, exec)
   assert.equal(result.rows, 1)
   assert.equal(result.order_lines, 0)
   assert.equal(result.total_units, 0)
@@ -172,7 +172,7 @@ test('store and product names with commas are RFC 4180 quoted', async (t) => {
     'store,sku,name,sales_qty,stock_qty,in_transit,safety_days,cycle_days,moq,unit_price_cents\n' +
       '"上海, 静安店",SKU-1,"苏打饼干, 400g",300,0,0,0,7,1,1000\n',
   )
-  const result = await tools['replenish.export'].execute({ path: file, filename: 'comma.csv' }, exec)
+  const result = await tools['replenish_export'].execute({ path: file, filename: 'comma.csv' }, exec)
   const parsed = parseCsv(await readFile(result.path, 'utf8'))
   assert.equal(parsed.rows[1][0], '上海, 静安店')
   assert.equal(parsed.rows[1][2], '苏打饼干, 400g')
@@ -207,8 +207,8 @@ test('the CSV body is deterministic across two identical runs', async (t) => {
     row({ store: 'B 店', sku: 'SKU-2', sales: 300, stock: 0, transit: 0, safety: 0, cycle: 7, moq: 1 }),
     row({ store: 'A 店', sku: 'SKU-1', sales: 300, stock: 0, transit: 0, safety: 0, cycle: 7, moq: 1 }),
   ])
-  const first = await tools['replenish.export'].execute({ path: file, filename: 'stable.csv' }, exec)
-  const second = await tools['replenish.export'].execute({ path: file, filename: 'stable.csv' }, exec)
+  const first = await tools['replenish_export'].execute({ path: file, filename: 'stable.csv' }, exec)
+  const second = await tools['replenish_export'].execute({ path: file, filename: 'stable.csv' }, exec)
   assert.equal(first.sha256, second.sha256)
   const parsed = parseCsv(await readFile(first.path, 'utf8'))
   assert.deepEqual(parsed.rows.slice(1).map((line) => line[0]), ['A 店', 'B 店'])

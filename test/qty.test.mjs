@@ -21,7 +21,7 @@ async function rejectRow(t, overrides, label = '') {
   const file = await writeReplenish(dir, 'bad.csv', [row(overrides)])
   const tools = toolMap(path.join(dir, 'store'))
   await assert.rejects(
-    () => tools['replenish.suggest'].execute({ path: file }, exec),
+    () => tools['replenish_suggest'].execute({ path: file }, exec),
     (error) => assertErrorCode(error, 'E_REPL_QTY'),
     label || JSON.stringify(overrides),
   )
@@ -59,7 +59,7 @@ test('fractional or missing numeric cells are E_REPL_QTY and name the CSV line',
   const file = await writeReplenish(dir, 'fraction.csv', [row(), row({ sku: 'SKU-T-002', sales: '12.5' })])
   const tools = toolMap(path.join(dir, 'store'))
   await assert.rejects(
-    () => tools['replenish.suggest'].execute({ path: file }, exec),
+    () => tools['replenish_suggest'].execute({ path: file }, exec),
     (error) => {
       assertErrorCode(error, 'E_REPL_QTY')
       assert.match(error.message, /第 3 行销量/)
@@ -89,7 +89,7 @@ test('zero is valid for sales, stock, in-transit, safety days, cycle days and pr
   const dir = await makeTemp(t)
   const file = await writeReplenish(dir, 'zero.csv', [row({ sales: 0, stock: 0, transit: 0, safety: 0, cycle: 0, price: 0 })])
   const tools = toolMap(path.join(dir, 'store'))
-  const result = await tools['replenish.suggest'].execute({ path: file }, exec)
+  const result = await tools['replenish_suggest'].execute({ path: file }, exec)
   assert.equal(result.items[0].suggested_qty, 0)
   assert.equal(result.items[0].daily_avg, 0)
   assert.equal(result.items[0].stockout_risk, false)
@@ -113,7 +113,7 @@ test('the tool rejects an invalid window_days before touching the CSV', async (t
   const tools = toolMap(path.join(await makeTemp(t), 'store'))
   for (const window_days of [0, 1.5, -30, 4000]) {
     await assert.rejects(
-      () => tools['replenish.suggest'].execute({ path: samplePath, window_days }, exec),
+      () => tools['replenish_suggest'].execute({ path: samplePath, window_days }, exec),
       (error) => assertErrorCode(error, 'E_REPL_QTY'),
       String(window_days),
     )

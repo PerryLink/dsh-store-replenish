@@ -43,7 +43,7 @@ test('each code has different human wording', () => {
 test('all four codes are reachable through the public tools', async (t) => {
   const dir = await makeTemp(t)
   const tools = toolMap(path.join(dir, 'store'))
-  const suggest = (overrides = {}) => tools['replenish.suggest'].execute({ path: samplePath, ...overrides }, exec)
+  const suggest = (overrides = {}) => tools['replenish_suggest'].execute({ path: samplePath, ...overrides }, exec)
 
   const badQty = await writeReplenish(dir, 'bad-qty.csv', [row({ sales: -5 })])
   const missingColumn = await writeReplenish(
@@ -55,23 +55,23 @@ test('all four codes are reachable through the public tools', async (t) => {
   const headerOnly = await writeReplenish(dir, 'header.csv', [])
 
   await assert.rejects(
-    () => tools['replenish.suggest'].execute({ path: badQty }, exec),
+    () => tools['replenish_suggest'].execute({ path: badQty }, exec),
     (error) => assertErrorCode(error, 'E_REPL_QTY'),
   )
   await assert.rejects(
-    () => tools['replenish.suggest'].execute({ path: missingColumn }, exec),
+    () => tools['replenish_suggest'].execute({ path: missingColumn }, exec),
     (error) => assertErrorCode(error, 'E_REPL_CSV_ROW'),
   )
   await assert.rejects(
-    () => tools['replenish.plan'].execute({ path: headerOnly }, exec),
+    () => tools['replenish_plan'].execute({ path: headerOnly }, exec),
     (error) => assertErrorCode(error, 'E_REPL_EMPTY'),
   )
   await assert.rejects(
-    () => tools['replenish.export'].execute({ path: samplePath, filename: '../x.csv' }, exec),
+    () => tools['replenish_export'].execute({ path: samplePath, filename: '../x.csv' }, exec),
     (error) => assertErrorCode(error, 'E_REPL_PATH_INVALID'),
   )
   await assert.rejects(
-    () => tools['replenish.suggest'].execute({ path: path.join(dir, 'missing.csv') }, exec),
+    () => tools['replenish_suggest'].execute({ path: path.join(dir, 'missing.csv') }, exec),
     (error) => assertErrorCode(error, 'E_REPL_PATH_INVALID'),
   )
   assert.ok(suggest)
@@ -82,7 +82,7 @@ test('error messages name the offending physical CSV line where relevant', async
   const file = await writeReplenish(dir, 'rows.csv', [row(), row({ sku: 'SKU-T-002', sales: -1 })])
   const tools = toolMap(path.join(dir, 'store'))
   await assert.rejects(
-    () => tools['replenish.suggest'].execute({ path: file }, exec),
+    () => tools['replenish_suggest'].execute({ path: file }, exec),
     (error) => {
       assert.match(error.message, /第 3 行销量/)
       return true
@@ -95,7 +95,7 @@ test('a header-only CSV reports E_REPL_EMPTY rather than a row error', async (t)
   const file = await writeReplenish(dir, 'header-only.csv', [])
   const tools = toolMap(path.join(dir, 'store'))
   await assert.rejects(
-    () => tools['replenish.suggest'].execute({ path: file }, exec),
+    () => tools['replenish_suggest'].execute({ path: file }, exec),
     (error) => {
       assertErrorCode(error, 'E_REPL_EMPTY')
       assert.match(error.message, /只有表头/)

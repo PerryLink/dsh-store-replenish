@@ -157,7 +157,7 @@ async function loadPlan(args: PolicyArgs): Promise<PlanReport> {
 
 export function createTools(deps: ToolDeps) {
   const suggest = defineTool({
-    name: 'replenish.suggest',
+    name: 'replenish_suggest',
     description:
       'Suggest a replenishment quantity per store-SKU from a local CSV (store, sku, name, sales_qty, stock_qty, in_transit, safety_days, cycle_days, moq, unit_price_cents). Formula: ceil((daily average × (cycle_days + safety_days) − stock − in-transit) / moq) × moq, or 0 when stock already covers the target. Flags slow-moving SKUs (turnover > 60 days) and stockout risk (stock + in-transit cannot cover one replenishment cycle). Read-only.',
     parameters: policyParameters,
@@ -174,7 +174,7 @@ export function createTools(deps: ToolDeps) {
   })
 
   const plan = defineTool({
-    name: 'replenish.plan',
+    name: 'replenish_plan',
     description:
       'Aggregate replenishment suggestions into one order per store: SKU count, order lines, total units and estimated amount, with stores ranked by stockout risk (current stockout, then stockout-risk count, then amount). Returns each store with its per-SKU items. Read-only.',
     parameters: policyParameters,
@@ -191,7 +191,7 @@ export function createTools(deps: ToolDeps) {
   })
 
   const exportTool = defineTool({
-    name: 'replenish.export',
+    name: 'replenish_export',
     description:
       'Write the replenishment order as CSV under $DSH_HOME/dsh-store-replenish/exports with columns 门店/SKU/品名/当前库存/在途/日均销量/补货周期天数/安全天数/建议补货量/预估金额/缺货风险/滞销/周转天数. Only SKUs with a positive suggested quantity are written unless include_zero=true. Stores follow the stockout-risk order. Returns path, sha256, bytes and row counts.',
     parameters: {

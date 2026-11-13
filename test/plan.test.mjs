@@ -16,7 +16,7 @@ async function planRows(t, rows, windowDays = 30) {
   const dir = await makeTemp(t)
   const file = await writeReplenish(dir, 'plan.csv', rows)
   const tools = toolMap(path.join(dir, 'store'))
-  return tools['replenish.plan'].execute({ path: file, window_days: windowDays }, exec)
+  return tools['replenish_plan'].execute({ path: file, window_days: windowDays }, exec)
 }
 
 test('the sample plan aggregates 6 Shanghai lines and 5 Chengdu lines', async (t) => {
@@ -128,7 +128,7 @@ test('a 15-day window re-scales the sample plan', async (t) => {
 
 test('the plan keeps the sample source hash and window', async (t) => {
   const tools = toolMap(path.join(await makeTemp(t), 'store'))
-  const suggest = await tools['replenish.suggest'].execute({ path: samplePath }, exec)
+  const suggest = await tools['replenish_suggest'].execute({ path: samplePath }, exec)
   const plan = await planFor(tools)
   assert.equal(plan.source_sha256, suggest.source_sha256)
   assert.equal(plan.window_days, suggest.window_days)
