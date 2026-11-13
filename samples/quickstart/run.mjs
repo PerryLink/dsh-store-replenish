@@ -32,12 +32,12 @@ async function run() {
     const tools = Object.fromEntries(createTools({ baseDir: tempDir }).map((tool) => [tool.name, tool]))
     const exec = { callId: 'quickstart' }
 
-    const suggestions = await tools['replenish.suggest'].execute(
+    const suggestions = await tools['replenish_suggest'].execute(
       { path: samplePath, window_days: WINDOW_DAYS },
       exec,
     )
-    const plan = await tools['replenish.plan'].execute({ path: samplePath, window_days: WINDOW_DAYS }, exec)
-    const exported = await tools['replenish.export'].execute(
+    const plan = await tools['replenish_plan'].execute({ path: samplePath, window_days: WINDOW_DAYS }, exec)
+    const exported = await tools['replenish_export'].execute(
       { path: samplePath, window_days: WINDOW_DAYS },
       exec,
     )

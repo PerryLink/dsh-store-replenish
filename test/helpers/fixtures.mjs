@@ -75,14 +75,14 @@ export function assertErrorCode(error, code) {
 }
 
 export async function suggestFor(tools, overrides = {}) {
-  return tools['replenish.suggest'].execute(
+  return tools['replenish_suggest'].execute(
     { path: samplePath, window_days: WINDOW_DAYS, ...overrides },
     exec,
   )
 }
 
 export async function planFor(tools, overrides = {}) {
-  return tools['replenish.plan'].execute(
+  return tools['replenish_plan'].execute(
     { path: samplePath, window_days: WINDOW_DAYS, ...overrides },
     exec,
   )

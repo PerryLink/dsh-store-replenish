@@ -44,16 +44,16 @@ async function main() {
     const exec = { callId: 'acceptance' }
     const call = (name, args) => tools[name].execute(args, exec)
 
-    const suggest = await call('replenish.suggest', { path: sample, window_days: WINDOW_DAYS })
-    const plan = await call('replenish.plan', { path: sample, window_days: WINDOW_DAYS })
-    const exported = await call('replenish.export', { path: sample, window_days: WINDOW_DAYS })
-    const withZero = await call('replenish.export', {
+    const suggest = await call('replenish_suggest', { path: sample, window_days: WINDOW_DAYS })
+    const plan = await call('replenish_plan', { path: sample, window_days: WINDOW_DAYS })
+    const exported = await call('replenish_export', { path: sample, window_days: WINDOW_DAYS })
+    const withZero = await call('replenish_export', {
       path: sample,
       window_days: WINDOW_DAYS,
       include_zero: true,
       filename: 'acceptance-all.csv',
     })
-    const shorter = await call('replenish.plan', { path: sample, window_days: 15 })
+    const shorter = await call('replenish_plan', { path: sample, window_days: 15 })
 
     const find = (store, sku) =>
       suggest.items.find((item) => item.store === store && item.sku === sku)
@@ -103,14 +103,14 @@ async function main() {
     const coveredFile = path.join(tempDir, 'covered.csv')
     writeFileSync(coveredFile, `${sampleHeader}\n测试店,SKU-1,商品,300,500,0,0,7,1,100\n`)
 
-    const badQtyCode = await errorCode(call('replenish.suggest', { path: badQtyFile }))
-    const missingColumnCode = await errorCode(call('replenish.suggest', { path: missingColumnFile }))
-    const emptyCode = await errorCode(call('replenish.plan', { path: emptyFile }))
+    const badQtyCode = await errorCode(call('replenish_suggest', { path: badQtyFile }))
+    const missingColumnCode = await errorCode(call('replenish_suggest', { path: missingColumnFile }))
+    const emptyCode = await errorCode(call('replenish_plan', { path: emptyFile }))
     const pathCode = await errorCode(
-      call('replenish.export', { path: sample, filename: '../evil.csv' }),
+      call('replenish_export', { path: sample, filename: '../evil.csv' }),
     )
-    const coveredCode = await errorCode(call('replenish.export', { path: coveredFile }))
-    const coveredAll = await call('replenish.export', {
+    const coveredCode = await errorCode(call('replenish_export', { path: coveredFile }))
+    const coveredAll = await call('replenish_export', {
       path: coveredFile,
       include_zero: true,
       filename: 'acceptance-covered.csv',

@@ -10,15 +10,15 @@ import { samplePath } from './helpers/fixtures.mjs'
 const baseDir = path.join(os.tmpdir(), 'dsh-store-replenish-smoke')
 const exec = { callId: 'test' }
 
-test('createTools exposes the three replenish.* tools with unique names', () => {
+test('createTools exposes the three replenish_* tools with unique names', () => {
   const tools = createTools({ baseDir })
   assert.deepEqual(
     tools.map((tool) => tool.name),
-    ['replenish.suggest', 'replenish.plan', 'replenish.export'],
+    ['replenish_suggest', 'replenish_plan', 'replenish_export'],
   )
   assert.equal(new Set(tools.map((tool) => tool.name)).size, 3)
   for (const tool of tools) {
-    assert.ok(tool.name.startsWith('replenish.'))
+    assert.ok(tool.name.startsWith('replenish_'))
     assert.ok(tool.description.length > 0)
     assert.equal(typeof tool.execute, 'function')
     assert.equal(typeof tool.output.render, 'function')
@@ -53,7 +53,7 @@ test('apply() registers all three tools and writes the CSV under the override', 
   await plugin.apply({ tools: { register(tool) { registered.push(tool) } } })
   assert.equal(registered.length, 3)
 
-  const exporter = registered.find((tool) => tool.name === 'replenish.export')
+  const exporter = registered.find((tool) => tool.name === 'replenish_export')
   const result = await exporter.execute({ path: samplePath }, exec)
   assert.equal(result.rows, 11)
   assert.ok(result.path.startsWith(`${dir}${path.sep}exports${path.sep}`))
@@ -62,13 +62,13 @@ test('apply() registers all three tools and writes the CSV under the override', 
 
 test('every tool render returns exactly one text block', async (t) => {
   const tools = Object.fromEntries(createTools({ baseDir }).map((tool) => [tool.name, tool]))
-  const suggest = await tools['replenish.suggest'].execute({ path: samplePath }, exec)
-  const plan = await tools['replenish.plan'].execute({ path: samplePath }, exec)
-  const exported = await tools['replenish.export'].execute({ path: samplePath }, exec)
+  const suggest = await tools['replenish_suggest'].execute({ path: samplePath }, exec)
+  const plan = await tools['replenish_plan'].execute({ path: samplePath }, exec)
+  const exported = await tools['replenish_export'].execute({ path: samplePath }, exec)
 
-  const renderedSuggest = tools['replenish.suggest'].output.render({ path: samplePath }, suggest)
-  const renderedPlan = tools['replenish.plan'].output.render({ path: samplePath }, plan)
-  const renderedExport = tools['replenish.export'].output.render({ path: samplePath }, exported)
+  const renderedSuggest = tools['replenish_suggest'].output.render({ path: samplePath }, suggest)
+  const renderedPlan = tools['replenish_plan'].output.render({ path: samplePath }, plan)
+  const renderedExport = tools['replenish_export'].output.render({ path: samplePath }, exported)
   for (const rendered of [renderedSuggest, renderedPlan, renderedExport]) {
     assert.equal(rendered.length, 1)
     assert.equal(rendered[0].type, 'text')
@@ -83,13 +83,13 @@ test('the three tools stay read-only except the exporter', async (t) => {
   const dir = await mkdtemp(path.join(os.tmpdir(), 'dsh-store-replenish-readonly-'))
   t.after(() => rm(dir, { recursive: true, force: true }))
   const tools = Object.fromEntries(createTools({ baseDir: dir }).map((tool) => [tool.name, tool]))
-  await tools['replenish.suggest'].execute({ path: samplePath }, exec)
-  await tools['replenish.plan'].execute({ path: samplePath }, exec)
+  await tools['replenish_suggest'].execute({ path: samplePath }, exec)
+  await tools['replenish_plan'].execute({ path: samplePath }, exec)
   const entries = await readFile(path.join(dir, 'exports', 'replenish-30d.csv'), 'utf8').then(
     () => 'created',
     () => 'missing',
   )
   assert.equal(entries, 'missing')
-  await tools['replenish.export'].execute({ path: samplePath }, exec)
+  await tools['replenish_export'].execute({ path: samplePath }, exec)
   assert.match(await readFile(path.join(dir, 'exports', 'replenish-30d.csv'), 'utf8'), /^门店,SKU/)
 })

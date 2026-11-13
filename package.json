@@ -1,6 +1,6 @@
 {
   "name": "dsh-store-replenish",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Store-SKU replenishment suggestions, per-store replenishment plans and replenishment CSV; local files only.",
   "type": "module",
   "main": "./lib/plugin/index.js",

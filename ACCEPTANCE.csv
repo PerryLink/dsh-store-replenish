@@ -1,17 +1,17 @@
 req_id,metric,threshold,actual,script,evidence_sha256,pass,source,counted
-AC-R01,suggest totals,rows=16 stores=2 unique_skus=8 order_lines=11 units=398 value=476880 risk=2 slow=1,rows=16 stores=2 unique_skus=8 order_lines=11 units=398 value=476880 risk=2 slow=1,scripts/acceptance.mjs,f1559f7e8eec066fc968f1f6aa22f7ae60d5a804e3fbbb7ecad2bf415f9b0722,true,public/synthetic,false
-AC-R02,MOQ rounding,苏打=72 牛奶=60 乌龙=30 坚果=12,苏打=72 牛奶=60 乌龙=30 坚果=12,scripts/acceptance.mjs,f1559f7e8eec066fc968f1f6aa22f7ae60d5a804e3fbbb7ecad2bf415f9b0722,true,public/synthetic,false
-AC-R03,stockout and slow flags,risk=上海静安店/SKU-DA-001|上海静安店/SKU-SN-001 slow=成都高新店/SKU-HH-002 now=0,risk=上海静安店/SKU-DA-001|上海静安店/SKU-SN-001 slow=成都高新店/SKU-HH-002 now=0,scripts/acceptance.mjs,f1559f7e8eec066fc968f1f6aa22f7ae60d5a804e3fbbb7ecad2bf415f9b0722,true,public/synthetic,false
-AC-R04,store aggregation,上海=8/6/282/290820/2/medium 成都=8/5/116/186060/0/low,上海=8/6/282/290820/2/medium 成都=8/5/116/186060/0/low,scripts/acceptance.mjs,f1559f7e8eec066fc968f1f6aa22f7ae60d5a804e3fbbb7ecad2bf415f9b0722,true,public/synthetic,false
-AC-R05,store risk order,order=上海静安店/成都高新店,order=上海静安店/成都高新店,scripts/acceptance.mjs,f1559f7e8eec066fc968f1f6aa22f7ae60d5a804e3fbbb7ecad2bf415f9b0722,true,public/synthetic,false
-AC-R06,plan equals suggest totals,totals=same source=same,totals=same source=same,scripts/acceptance.mjs,f1559f7e8eec066fc968f1f6aa22f7ae60d5a804e3fbbb7ecad2bf415f9b0722,true,public/synthetic,false
-AC-R07,replenishment CSV,rows=11 lines=12 stores=2 units=398 value=476880 header=ok hash=ok,rows=11 lines=12 stores=2 units=398 value=476880 header=ok hash=ok,scripts/acceptance.mjs,f1559f7e8eec066fc968f1f6aa22f7ae60d5a804e3fbbb7ecad2bf415f9b0722,true,public/synthetic,false
-AC-R08,include zero,rows=16 slow=1,rows=16 slow=1,scripts/acceptance.mjs,f1559f7e8eec066fc968f1f6aa22f7ae60d5a804e3fbbb7ecad2bf415f9b0722,true,public/synthetic,false
-AC-R09,15-day window,order_lines=14 units=1774 risk=13,order_lines=14 units=1774 risk=13,scripts/acceptance.mjs,f1559f7e8eec066fc968f1f6aa22f7ae60d5a804e3fbbb7ecad2bf415f9b0722,true,public/synthetic,false
-AC-R10,bad quantity,E_REPL_QTY,E_REPL_QTY,scripts/acceptance.mjs,f1559f7e8eec066fc968f1f6aa22f7ae60d5a804e3fbbb7ecad2bf415f9b0722,true,public/synthetic,false
-AC-R11,missing column,E_REPL_CSV_ROW,E_REPL_CSV_ROW,scripts/acceptance.mjs,f1559f7e8eec066fc968f1f6aa22f7ae60d5a804e3fbbb7ecad2bf415f9b0722,true,public/synthetic,false
-AC-R12,empty table,E_REPL_EMPTY,E_REPL_EMPTY,scripts/acceptance.mjs,f1559f7e8eec066fc968f1f6aa22f7ae60d5a804e3fbbb7ecad2bf415f9b0722,true,public/synthetic,false
-AC-R13,export path safety,E_REPL_PATH_INVALID,E_REPL_PATH_INVALID,scripts/acceptance.mjs,f1559f7e8eec066fc968f1f6aa22f7ae60d5a804e3fbbb7ecad2bf415f9b0722,true,public/synthetic,false
-AC-R14,no order to export,E_REPL_EMPTY then rows=1,E_REPL_EMPTY then rows=1,scripts/acceptance.mjs,f1559f7e8eec066fc968f1f6aa22f7ae60d5a804e3fbbb7ecad2bf415f9b0722,true,public/synthetic,false
-AC-R15,first CSV row,上海静安店|SKU-SN-001|苏打饼干 400g|20|10|10.00|7|3|72|928.80|是|否|2.0,上海静安店|SKU-SN-001|苏打饼干 400g|20|10|10.00|7|3|72|928.80|是|否|2.0,scripts/acceptance.mjs,f1559f7e8eec066fc968f1f6aa22f7ae60d5a804e3fbbb7ecad2bf415f9b0722,true,public/synthetic,false
+AC-R01,suggest totals,rows=16 stores=2 unique_skus=8 order_lines=11 units=398 value=476880 risk=2 slow=1,rows=16 stores=2 unique_skus=8 order_lines=11 units=398 value=476880 risk=2 slow=1,scripts/acceptance.mjs,f4cdce5fb49fc9a3f9c6034591cbd7b88e7c0775f8f67dd11027cc508a8d9ea2,true,public/synthetic,false
+AC-R02,MOQ rounding,苏打=72 牛奶=60 乌龙=30 坚果=12,苏打=72 牛奶=60 乌龙=30 坚果=12,scripts/acceptance.mjs,f4cdce5fb49fc9a3f9c6034591cbd7b88e7c0775f8f67dd11027cc508a8d9ea2,true,public/synthetic,false
+AC-R03,stockout and slow flags,risk=上海静安店/SKU-DA-001|上海静安店/SKU-SN-001 slow=成都高新店/SKU-HH-002 now=0,risk=上海静安店/SKU-DA-001|上海静安店/SKU-SN-001 slow=成都高新店/SKU-HH-002 now=0,scripts/acceptance.mjs,f4cdce5fb49fc9a3f9c6034591cbd7b88e7c0775f8f67dd11027cc508a8d9ea2,true,public/synthetic,false
+AC-R04,store aggregation,上海=8/6/282/290820/2/medium 成都=8/5/116/186060/0/low,上海=8/6/282/290820/2/medium 成都=8/5/116/186060/0/low,scripts/acceptance.mjs,f4cdce5fb49fc9a3f9c6034591cbd7b88e7c0775f8f67dd11027cc508a8d9ea2,true,public/synthetic,false
+AC-R05,store risk order,order=上海静安店/成都高新店,order=上海静安店/成都高新店,scripts/acceptance.mjs,f4cdce5fb49fc9a3f9c6034591cbd7b88e7c0775f8f67dd11027cc508a8d9ea2,true,public/synthetic,false
+AC-R06,plan equals suggest totals,totals=same source=same,totals=same source=same,scripts/acceptance.mjs,f4cdce5fb49fc9a3f9c6034591cbd7b88e7c0775f8f67dd11027cc508a8d9ea2,true,public/synthetic,false
+AC-R07,replenishment CSV,rows=11 lines=12 stores=2 units=398 value=476880 header=ok hash=ok,rows=11 lines=12 stores=2 units=398 value=476880 header=ok hash=ok,scripts/acceptance.mjs,f4cdce5fb49fc9a3f9c6034591cbd7b88e7c0775f8f67dd11027cc508a8d9ea2,true,public/synthetic,false
+AC-R08,include zero,rows=16 slow=1,rows=16 slow=1,scripts/acceptance.mjs,f4cdce5fb49fc9a3f9c6034591cbd7b88e7c0775f8f67dd11027cc508a8d9ea2,true,public/synthetic,false
+AC-R09,15-day window,order_lines=14 units=1774 risk=13,order_lines=14 units=1774 risk=13,scripts/acceptance.mjs,f4cdce5fb49fc9a3f9c6034591cbd7b88e7c0775f8f67dd11027cc508a8d9ea2,true,public/synthetic,false
+AC-R10,bad quantity,E_REPL_QTY,E_REPL_QTY,scripts/acceptance.mjs,f4cdce5fb49fc9a3f9c6034591cbd7b88e7c0775f8f67dd11027cc508a8d9ea2,true,public/synthetic,false
+AC-R11,missing column,E_REPL_CSV_ROW,E_REPL_CSV_ROW,scripts/acceptance.mjs,f4cdce5fb49fc9a3f9c6034591cbd7b88e7c0775f8f67dd11027cc508a8d9ea2,true,public/synthetic,false
+AC-R12,empty table,E_REPL_EMPTY,E_REPL_EMPTY,scripts/acceptance.mjs,f4cdce5fb49fc9a3f9c6034591cbd7b88e7c0775f8f67dd11027cc508a8d9ea2,true,public/synthetic,false
+AC-R13,export path safety,E_REPL_PATH_INVALID,E_REPL_PATH_INVALID,scripts/acceptance.mjs,f4cdce5fb49fc9a3f9c6034591cbd7b88e7c0775f8f67dd11027cc508a8d9ea2,true,public/synthetic,false
+AC-R14,no order to export,E_REPL_EMPTY then rows=1,E_REPL_EMPTY then rows=1,scripts/acceptance.mjs,f4cdce5fb49fc9a3f9c6034591cbd7b88e7c0775f8f67dd11027cc508a8d9ea2,true,public/synthetic,false
+AC-R15,first CSV row,上海静安店|SKU-SN-001|苏打饼干 400g|20|10|10.00|7|3|72|928.80|是|否|2.0,上海静安店|SKU-SN-001|苏打饼干 400g|20|10|10.00|7|3|72|928.80|是|否|2.0,scripts/acceptance.mjs,f4cdce5fb49fc9a3f9c6034591cbd7b88e7c0775f8f67dd11027cc508a8d9ea2,true,public/synthetic,false
 PS1-QS01,quickstart golden,1/1,1,samples/quickstart/run.mjs,967c1b17b3b356ea704ca7b05150e19d2ba8a4a7d509ca115fa1a1494d16f1d7,true,synthetic/quickstart,true

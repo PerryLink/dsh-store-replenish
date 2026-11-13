@@ -16,9 +16,9 @@ test('policy defaults and bounds are documented constants', () => {
 
 test('every tool applies the requested window consistently', async (t) => {
   const tools = toolMap(path.join(await makeTemp(t), 'store'))
-  const suggest = await tools['replenish.suggest'].execute({ path: samplePath, window_days: 15 }, exec)
-  const plan = await tools['replenish.plan'].execute({ path: samplePath, window_days: 15 }, exec)
-  const exported = await tools['replenish.export'].execute({ path: samplePath, window_days: 15 }, exec)
+  const suggest = await tools['replenish_suggest'].execute({ path: samplePath, window_days: 15 }, exec)
+  const plan = await tools['replenish_plan'].execute({ path: samplePath, window_days: 15 }, exec)
+  const exported = await tools['replenish_export'].execute({ path: samplePath, window_days: 15 }, exec)
   assert.equal(suggest.window_days, 15)
   assert.equal(plan.window_days, 15)
   assert.equal(exported.filename, 'replenish-15d.csv')
@@ -27,15 +27,15 @@ test('every tool applies the requested window consistently', async (t) => {
 
 test('plan totals are exactly the suggestion totals', async (t) => {
   const tools = toolMap(path.join(await makeTemp(t), 'store'))
-  const suggest = await tools['replenish.suggest'].execute({ path: samplePath }, exec)
-  const plan = await tools['replenish.plan'].execute({ path: samplePath }, exec)
+  const suggest = await tools['replenish_suggest'].execute({ path: samplePath }, exec)
+  const plan = await tools['replenish_plan'].execute({ path: samplePath }, exec)
   assert.deepEqual(plan.totals, suggest.totals)
   assert.equal(plan.source_sha256, suggest.source_sha256)
 })
 
 test('an invalid window is rejected by suggest, plan and export', async (t) => {
   const tools = toolMap(path.join(await makeTemp(t), 'store'))
-  for (const name of ['replenish.suggest', 'replenish.plan', 'replenish.export']) {
+  for (const name of ['replenish_suggest', 'replenish_plan', 'replenish_export']) {
     await assert.rejects(
       () => tools[name].execute({ path: samplePath, window_days: 0 }, exec),
       (error) => assertErrorCode(error, 'E_REPL_QTY'),
@@ -46,8 +46,8 @@ test('an invalid window is rejected by suggest, plan and export', async (t) => {
 
 test('omitting window_days uses the 30-day default everywhere', async (t) => {
   const tools = toolMap(path.join(await makeTemp(t), 'store'))
-  const suggest = await tools['replenish.suggest'].execute({ path: samplePath }, exec)
-  const exported = await tools['replenish.export'].execute({ path: samplePath }, exec)
+  const suggest = await tools['replenish_suggest'].execute({ path: samplePath }, exec)
+  const exported = await tools['replenish_export'].execute({ path: samplePath }, exec)
   assert.equal(suggest.window_days, 30)
   assert.equal(exported.filename, 'replenish-30d.csv')
   assert.equal(exported.total_units, 398)
@@ -55,8 +55,8 @@ test('omitting window_days uses the 30-day default everywhere', async (t) => {
 
 test('a shorter window raises risk counts because one cycle covers more demand', async (t) => {
   const tools = toolMap(path.join(await makeTemp(t), 'store'))
-  const month = await tools['replenish.plan'].execute({ path: samplePath }, exec)
-  const half = await tools['replenish.plan'].execute({ path: samplePath, window_days: 15 }, exec)
+  const month = await tools['replenish_plan'].execute({ path: samplePath }, exec)
+  const half = await tools['replenish_plan'].execute({ path: samplePath, window_days: 15 }, exec)
   assert.equal(month.totals.stockout_risks, 2)
   assert.equal(half.totals.stockout_risks, 13)
   assert.ok(half.totals.total_units > month.totals.total_units)
@@ -64,8 +64,8 @@ test('a shorter window raises risk counts because one cycle covers more demand',
 
 test('a shorter window raises the run rate and can clear slow-moving flags', async (t) => {
   const tools = toolMap(path.join(await makeTemp(t), 'store'))
-  const month = await tools['replenish.suggest'].execute({ path: samplePath }, exec)
-  const half = await tools['replenish.suggest'].execute({ path: samplePath, window_days: 15 }, exec)
+  const month = await tools['replenish_suggest'].execute({ path: samplePath }, exec)
+  const half = await tools['replenish_suggest'].execute({ path: samplePath, window_days: 15 }, exec)
   assert.equal(month.totals.slow_moving, 1)
   assert.equal(half.totals.slow_moving, 0)
   assert.ok(half.totals.total_units > month.totals.total_units)

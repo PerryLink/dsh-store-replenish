@@ -393,7 +393,7 @@ export interface PlanReport {
  * Aggregate suggestions into one replenishment order per store. Stores with
  * stockouts rank first, then stores with more stockout risks, then larger
  * estimated value, then name. Within a store the safest-to-order items keep the
- * same risk-first ordering as `replenish.suggest`.
+ * same risk-first ordering as `replenish_suggest`.
  */
 export function buildPlanReport(report: SuggestReport): PlanReport {
   const byStore = new Map<string, ReplenishItem[]>()

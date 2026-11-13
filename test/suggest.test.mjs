@@ -18,7 +18,7 @@ async function suggestRows(t, rows, windowDays) {
   const dir = await makeTemp(t)
   const file = await writeReplenish(dir, 'rows.csv', rows)
   const tools = toolMap(path.join(dir, 'store'))
-  return tools['replenish.suggest'].execute(
+  return tools['replenish_suggest'].execute(
     { path: file, ...(windowDays === undefined ? {} : { window_days: windowDays }) },
     exec,
   )

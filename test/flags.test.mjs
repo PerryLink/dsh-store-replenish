@@ -15,7 +15,7 @@ async function suggestRows(t, rows, windowDays = 30) {
   const dir = await makeTemp(t)
   const file = await writeReplenish(dir, 'flags.csv', rows)
   const tools = toolMap(path.join(dir, 'store'))
-  return tools['replenish.suggest'].execute({ path: file, window_days: windowDays }, exec)
+  return tools['replenish_suggest'].execute({ path: file, window_days: windowDays }, exec)
 }
 
 test('turnover of exactly 60 days is not slow-moving, 61 days is', async (t) => {

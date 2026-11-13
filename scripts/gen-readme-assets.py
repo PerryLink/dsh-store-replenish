@@ -493,7 +493,7 @@ def flow_svg(skin_name: str) -> str:
     shadow_col = "#1b1735" if skin_name == "light" else "#000000"
     white = "#ffffff"
 
-    p.append(f'''<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="660" viewBox="0 0 1100 660" role="img" aria-label="dsh-store-replenish structure: one 10-column store-SKU CSV row is measured on a stock-level gauge (target stock, available stock, gap), the gap is packed along a MOQ ladder into a suggested quantity, rows roll up into per-store plans ranked by stockout risk, and replenish.export writes a fixed 13-column CSV under DSH_HOME">
+    p.append(f'''<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="660" viewBox="0 0 1100 660" role="img" aria-label="dsh-store-replenish structure: one 10-column store-SKU CSV row is measured on a stock-level gauge (target stock, available stock, gap), the gap is packed along a MOQ ladder into a suggested quantity, rows roll up into per-store plans ranked by stockout risk, and replenish_export writes a fixed 13-column CSV under DSH_HOME">
 <title>dsh-store-replenish: gauge, MOQ ladder, store roll-up, 13-column CSV</title>
 <defs>
   <linearGradient id="bg" x1="0" y1="0" x2="0.3" y2="1">
@@ -540,7 +540,7 @@ def flow_svg(skin_name: str) -> str:
     # ------------------------------------------------------- ENGINE card
     p.append(f'''<g filter="url(#soft)"><rect x="292" y="118" width="420" height="360" rx="20" fill="{s['card']}" stroke="{s['edge']}" stroke-width="1.5"/></g>
 <rect x="312" y="132" width="250" height="28" rx="14" fill="{s['pill']}"/>
-{svg_text(324, 152, 'replenish.suggest · R0', fill=s['accent'], size=17)}
+{svg_text(324, 152, 'replenish_suggest · R0', fill=s['accent'], size=17)}
 {svg_text(696, 152, 'value ¥928.80', fill=s['faint'], size=14, anchor='end')}
 {svg_text(312, 186, 'target 100 = daily 10 × (cycle 7 + safety 3)', fill=s['text'], size=15)}
 {svg_text(312, 206, 'daily 10 = sales_qty 300 ÷ window_days 30', fill=s['sub'], size=14)}
@@ -618,7 +618,7 @@ def flow_svg(skin_name: str) -> str:
     # --------------------------------------------------------- PLAN card
     p.append(f'''<g filter="url(#soft)"><rect x="728" y="118" width="332" height="360" rx="20" fill="{s['card']}" stroke="{s['edge']}" stroke-width="1.5"/></g>
 <rect x="748" y="132" width="220" height="28" rx="14" fill="{s['pill']}"/>
-{svg_text(760, 152, 'replenish.plan · R0', fill=s['accent'], size=17)}
+{svg_text(760, 152, 'replenish_plan · R0', fill=s['accent'], size=17)}
 {svg_text(748, 184, 'per-store roll-up', fill=s['text'], size=17, weight=700, family=SANS)}
 {svg_text(748, 204, 'sort: now↓ risk↓ value↓ name↑', fill=s['faint'], size=14)}
 <line x1="748" y1="220" x2="1040" y2="220" stroke="{s['grid']}" stroke-width="1.4"/>''')
@@ -678,7 +678,7 @@ def flow_svg(skin_name: str) -> str:
     # ------------------------------------------------------- EXPORT band
     p.append(f'''<g filter="url(#soft)"><rect x="40" y="492" width="1020" height="118" rx="18" fill="{s['card']}" stroke="{s['edge']}" stroke-width="1.5"/></g>
 <rect x="60" y="504" width="242" height="28" rx="14" fill="{s['pill']}"/>
-{svg_text(72, 524, 'replenish.export · R1', fill=s['accent'], size=17)}
+{svg_text(72, 524, 'replenish_export · R1', fill=s['accent'], size=17)}
 {svg_text(1040, 524, 'sha256 · bytes · rows', fill=s['faint'], size=14, anchor='end')}
 {svg_text(60, 552, 'write → $DSH_HOME/dsh-store-replenish/exports/replenish-30d.csv', fill=s['text'], size=14)}''')
 
