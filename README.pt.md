@@ -167,6 +167,11 @@ A amostra são 16 linhas sintéticas (2 lojas × 8 SKUs). Contém um SKU de baix
 
 *Observed from `src/plugin/tools.ts:159-168` (a linha de render de `replenish_suggest`) e `docs/assets/quickstart.log`*
 
+![Saída real do quickstart do dsh-store-replenish](docs/assets/dsh-store-replenish-demo.gif)
+
+*A versão animada da mesma execução.*
+
+
 ## Dados medidos
 
 A suíte de aceitação pública/sintética é reproduzida com `node scripts/gate.mjs` (`scripts/lint.mjs` + `scripts/acceptance.mjs` + cada linha de `ACCEPTANCE.csv` com `pass=true`); o detalhe está em `ACCEPTANCE.csv`. Registro atual:

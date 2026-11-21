@@ -167,6 +167,11 @@ La muestra son 16 filas sintéticas (2 tiendas × 8 SKU). Contiene un SKU de baj
 
 *Observed from `src/plugin/tools.ts:159-168` (la línea de render de `replenish_suggest`) y `docs/assets/quickstart.log`*
 
+![Salida real del quickstart de dsh-store-replenish](docs/assets/dsh-store-replenish-demo.gif)
+
+*La versión animada de la misma ejecución.*
+
+
 ## Datos medidos
 
 La suite de aceptación pública/sintética se reproduce con `node scripts/gate.mjs` (`scripts/lint.mjs` + `scripts/acceptance.mjs` + cada fila de `ACCEPTANCE.csv` con `pass=true`); el detalle está en `ACCEPTANCE.csv`. Registro actual:

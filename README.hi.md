@@ -167,6 +167,11 @@ node samples/quickstart/run.mjs --check
 
 *Observed from `src/plugin/tools.ts:159-168` (`replenish_suggest` की रेंडर पंक्ति) तथा `docs/assets/quickstart.log`*
 
+![dsh-store-replenish quickstart का वास्तविक आउटपुट](docs/assets/dsh-store-replenish-demo.gif)
+
+*उसी असली रन का एनिमेटेड संस्करण।*
+
+
 ## मापे गए आँकड़े
 
 सार्वजनिक/कृत्रिम स्वीकृति सूट `node scripts/gate.mjs` से दोबारा चलती है (`scripts/lint.mjs` + `scripts/acceptance.mjs` + `ACCEPTANCE.csv` की हर पंक्ति `pass=true`); विवरण `ACCEPTANCE.csv` में है। मौजूदा रिकॉर्ड:

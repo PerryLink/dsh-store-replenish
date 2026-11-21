@@ -157,6 +157,11 @@ node samples/quickstart/run.mjs --check
 
 *Observed from `src/plugin/tools.ts:159-168`（`replenish_suggest` 的渲染行）与 `docs/assets/quickstart.log`*
 
+![dsh-store-replenish quickstart 真实运行输出](docs/assets/dsh-store-replenish-demo.gif)
+
+*同一段真实运行的动图版本。*
+
+
 ## 实测数据
 
 公开 / 合成验收由 `node scripts/gate.mjs` 重跑（`scripts/lint.mjs` + `scripts/acceptance.mjs` + `ACCEPTANCE.csv` 逐行 `pass=true`），明细落在 `ACCEPTANCE.csv`。当前记录：

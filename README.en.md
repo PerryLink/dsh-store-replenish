@@ -167,6 +167,11 @@ The sample is 16 synthetic rows (2 stores × 8 SKUs). It contains one slow-movin
 
 *Observed from `src/plugin/tools.ts:159-168` (the `replenish_suggest` render line) and `docs/assets/quickstart.log`*
 
+![Real dsh-store-replenish quickstart run output](docs/assets/dsh-store-replenish-demo.gif)
+
+*The animated version of the same run.*
+
+
 ## Measured data
 
 The public/synthetic acceptance suite is reproduced with `node scripts/gate.mjs` (`scripts/lint.mjs` + `scripts/acceptance.mjs` + every `ACCEPTANCE.csv` row `pass=true`); details live in `ACCEPTANCE.csv`. Current record:
