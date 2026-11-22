@@ -11,6 +11,8 @@
 
 DeepSeek Harness के लिए पुनःपूर्ति गणना प्लगइन: `दैनिक औसत × (साइकल दिन + सेफ्टी दिन) − स्टॉक − ट्रांज़िट में`, जिसे MOQ तक ऊपर की ओर पूर्णांकित किया जाता है, साथ में धीमी गति और स्टॉकआउट जोखिम के चिह्न। पूरी तरह लोकल, कोई रनटाइम निर्भरता नहीं, कोई नेटवर्क नहीं और कोई खरीद ऑर्डर नहीं।
 
+अंतिम सत्यापन: DeepSeek Harness `dsh-v0.2.3-alpha.1` (2026-11-22).
+
 [इंस्टॉल](#तीन-चरणों-में-शुरुआत) · [कॉन्फ़िगरेशन](#कॉन्फ़िगरेशन) · [FAQ](#faq) · [简体中文](README.md) · [English](README.en.md) · [Español](README.es.md) · [Português](README.pt.md) · [हिन्दी](README.hi.md)
 
 [![License](https://img.shields.io/badge/license-Apache--2.0-3366CC?style=flat-square&labelColor=2B3245)](LICENSE)
@@ -170,7 +172,6 @@ node samples/quickstart/run.mjs --check
 ![dsh-store-replenish quickstart का वास्तविक आउटपुट](docs/assets/dsh-store-replenish-demo.gif)
 
 *उसी असली रन का एनिमेटेड संस्करण।*
-
 
 ## मापे गए आँकड़े
 
@@ -364,7 +365,7 @@ node scripts/gate.mjs                    # lint + स्वीकृति + ACC
 node samples/quickstart/run.mjs --check  # कृत्रिम नमूना, quickstart ok छापना चाहिए
 ```
 
-TypeScript सोर्स `src/` में है (`src/core/` में CSV पार्सिंग, पुनःपूर्ति गणना, MOQ पूर्णांकन, पूर्णांक-पैसे धन, निर्यात और पथ सुरक्षा; `src/plugin/` में होस्ट सतह और टूल पंजीकरण), बिल्ड आउटपुट `lib/` में; साथ आया नमूना `samples/quickstart/` में। मौजूदा संस्करण `0.2.0` (`package.json` के अनुरूप)। टेस्ट `node --test test/*.test.mjs` से चलते हैं; सार्वजनिक नमूना न होने पर skip सामान्य है, विफलता नहीं।
+TypeScript सोर्स `src/` में है (`src/core/` में CSV पार्सिंग, पुनःपूर्ति गणना, MOQ पूर्णांकन, पूर्णांक-पैसे धन, निर्यात और पथ सुरक्षा; `src/plugin/` में होस्ट सतह और टूल पंजीकरण), बिल्ड आउटपुट `lib/` में; साथ आया नमूना `samples/quickstart/` में। मौजूदा संस्करण `0.2.1` (`package.json` के अनुरूप)। टेस्ट `node --test test/*.test.mjs` से चलते हैं; सार्वजनिक नमूना न होने पर skip सामान्य है, विफलता नहीं।
 
 शीर्ष बैनर और संरचना आरेख दोनों [`scripts/gen-readme-assets.py`](scripts/gen-readme-assets.py) से प्रोग्रामेटिक रूप से बनते हैं (बैनर Python + Pillow से रेंडर होने वाला 1440×576 webp है, आरेख हाथ से लिखा SVG है; CJK फ़ॉन्ट न मिले तो स्क्रिप्ट स्पष्ट त्रुटि के साथ रुकती है): `python scripts/gen-readme-assets.py` दोबारा चलाया जा सकता है और `docs/assets/dsh-store-replenish-hero-{zh,en}-{light,dark}.webp` तथा `docs/assets/dsh-store-replenish-flow-v5-{light,dark}.svg` लिखता है। आरेखों की हर संख्या `samples/quickstart/expected/result.json` से पढ़ी जाती है, इसलिए वे गोल्डन फ़ाइल से अलग नहीं हो सकतीं। इस रेपो में कोई benchmark डेटासेट नहीं है, इसलिए evidence ग्राफ़ नहीं है।
 

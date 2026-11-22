@@ -11,6 +11,8 @@
 
 面向 DeepSeek Harness 的补货计算插件：用「日均销量 ×（补货周期 + 安全天数）− 当前库存 − 在途」算出目标缺口，向上取整到起订量，顺手标出滞销与缺货风险；纯本地、零运行时依赖、不联网、不下采购单。
 
+最近一次核验：DeepSeek Harness `dsh-v0.2.3-alpha.1`（2026-11-22）。
+
 [安装](#三步上手) · [配置](#配置) · [FAQ](#faq) · [简体中文](README.md) · [English](README.en.md) · [Español](README.es.md) · [Português](README.pt.md) · [हिन्दी](README.hi.md)
 
 [![License](https://img.shields.io/badge/license-Apache--2.0-3366CC?style=flat-square&labelColor=2B3245)](LICENSE)
@@ -160,7 +162,6 @@ node samples/quickstart/run.mjs --check
 ![dsh-store-replenish quickstart 真实运行输出](docs/assets/dsh-store-replenish-demo.gif)
 
 *同一段真实运行的动图版本。*
-
 
 ## 实测数据
 
@@ -348,7 +349,7 @@ node scripts/gate.mjs                    # lint + acceptance + ACCEPTANCE.csv �
 node samples/quickstart/run.mjs --check  # 合成样例，应输出 quickstart ok
 ```
 
-TypeScript 源码在 `src/`（`src/core/` 负责 CSV 解析、补货计算、MOQ 取整、整数分金额、导出与路径安全；`src/plugin/` 负责宿主面与工具注册），构建产物在 `lib/`；随包样例在 `samples/quickstart/`。当前版本 `0.2.0`（与 `package.json` 一致）。测试用 `node --test test/*.test.mjs`；公开样本缺失导致的 skip 属正常，不是失败。
+TypeScript 源码在 `src/`（`src/core/` 负责 CSV 解析、补货计算、MOQ 取整、整数分金额、导出与路径安全；`src/plugin/` 负责宿主面与工具注册），构建产物在 `lib/`；随包样例在 `samples/quickstart/`。当前版本 `0.2.1`（与 `package.json` 一致）。测试用 `node --test test/*.test.mjs`；公开样本缺失导致的 skip 属正常，不是失败。
 
 开头 hero 与结构图都由 [`scripts/gen-readme-assets.py`](scripts/gen-readme-assets.py) 程序化生成（hero 用 Python + Pillow 渲染成 1440×576 的 webp，结构图是手写 SVG，缺 CJK 字体会直接报错退出）：`python scripts/gen-readme-assets.py` 可重复执行，输出 `docs/assets/dsh-store-replenish-hero-{zh,en}-{light,dark}.webp` 与 `docs/assets/dsh-store-replenish-flow-v5-{light,dark}.svg`；图里的数字直接读 `samples/quickstart/expected/result.json`，不会和金标漂移。本仓没有 benchmark 数据集，因此不画 evidence 图。
 

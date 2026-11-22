@@ -11,6 +11,8 @@
 
 Plugin de cálculo de reposición para DeepSeek Harness: `media diaria × (días de ciclo + días de seguridad) − existencias − en tránsito`, redondeado hacia arriba al MOQ, con marcas de baja rotación y de riesgo de ruptura. Todo local, sin dependencias en tiempo de ejecución, sin red y sin generar pedidos de compra.
 
+Última verificación: DeepSeek Harness `dsh-v0.2.3-alpha.1` (2026-11-22).
+
 [Instalación](#instalación-en-tres-pasos) · [Configuración](#configuración) · [FAQ](#faq) · [简体中文](README.md) · [English](README.en.md) · [Español](README.es.md) · [Português](README.pt.md) · [हिन्दी](README.hi.md)
 
 [![License](https://img.shields.io/badge/license-Apache--2.0-3366CC?style=flat-square&labelColor=2B3245)](LICENSE)
@@ -170,7 +172,6 @@ La muestra son 16 filas sintéticas (2 tiendas × 8 SKU). Contiene un SKU de baj
 ![Salida real del quickstart de dsh-store-replenish](docs/assets/dsh-store-replenish-demo.gif)
 
 *La versión animada de la misma ejecución.*
-
 
 ## Datos medidos
 
@@ -364,7 +365,7 @@ node scripts/gate.mjs                    # lint + aceptación + cada fila de ACC
 node samples/quickstart/run.mjs --check  # muestra sintética, debe imprimir quickstart ok
 ```
 
-El código TypeScript está en `src/` (`src/core/` contiene el análisis de CSV, el cálculo de reposición, el redondeo al MOQ, el dinero en céntimos enteros, la exportación y la seguridad de rutas; `src/plugin/` contiene la cara del host y el registro de herramientas); la compilación sale a `lib/`; la muestra incluida está en `samples/quickstart/`. Versión actual `0.2.0` (coincide con `package.json`). Las pruebas se ejecutan con `node --test test/*.test.mjs`; los skip por falta de una muestra pública son normales, no fallos.
+El código TypeScript está en `src/` (`src/core/` contiene el análisis de CSV, el cálculo de reposición, el redondeo al MOQ, el dinero en céntimos enteros, la exportación y la seguridad de rutas; `src/plugin/` contiene la cara del host y el registro de herramientas); la compilación sale a `lib/`; la muestra incluida está en `samples/quickstart/`. Versión actual `0.2.1` (coincide con `package.json`). Las pruebas se ejecutan con `node --test test/*.test.mjs`; los skip por falta de una muestra pública son normales, no fallos.
 
 El banner de cabecera y el diagrama de estructura los genera [`scripts/gen-readme-assets.py`](scripts/gen-readme-assets.py) (el banner es un webp de 1440×576 renderizado con Python + Pillow y el diagrama es SVG escrito a mano; si falta una fuente CJK el script aborta con un error claro): `python scripts/gen-readme-assets.py` puede repetirse y escribe `docs/assets/dsh-store-replenish-hero-{zh,en}-{light,dark}.webp` y `docs/assets/dsh-store-replenish-flow-v5-{light,dark}.svg`. Todas las cifras de las figuras se leen de `samples/quickstart/expected/result.json`, así que no se desvían del archivo dorado. Este repositorio no incluye un conjunto de benchmark, así que no hay gráfico de evidencia.
 

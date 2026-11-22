@@ -1,6 +1,6 @@
 {
   "name": "dsh-store-replenish",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Store-SKU replenishment suggestions, per-store replenishment plans and replenishment CSV; local files only.",
   "type": "module",
   "main": "./lib/plugin/index.js",
@@ -49,7 +49,7 @@
     }
   },
   "engines": {
-    "dsh": ">=0.2.1-rc.3 <0.4.0",
+    "dsh": ">=0.2.1-rc.3 <0.4.0 || >=0.2.3-0 <0.3.0-0",
     "node": ">=24.9.0 <25"
   },
   "packageManager": "pnpm@11.28.5",
@@ -89,7 +89,7 @@
   },
   "peerDependencies": {
     "@deepseek-ai/cordis": ">=4.0.5 <5.0.0",
-    "@deepseek-ai/dsh-tools": ">=0.2.1-rc.3 <0.4.0"
+    "@deepseek-ai/dsh-tools": ">=0.2.1-rc.3 <0.4.0 || >=0.2.3-0 <0.3.0-0"
   },
   "devDependencies": {
     "@deepseek-ai/cordis": "4.0.5",
