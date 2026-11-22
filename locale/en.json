@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Store replenish",
+    "description": "Turn a store-SKU sales/inventory CSV into per-SKU replenishment suggestions, per-store replenishment orders and a replenishment CSV."
+  }
+}

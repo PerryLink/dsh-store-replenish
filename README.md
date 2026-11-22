@@ -349,7 +349,7 @@ node scripts/gate.mjs                    # lint + acceptance + ACCEPTANCE.csv �
 node samples/quickstart/run.mjs --check  # 合成样例，应输出 quickstart ok
 ```
 
-TypeScript 源码在 `src/`（`src/core/` 负责 CSV 解析、补货计算、MOQ 取整、整数分金额、导出与路径安全；`src/plugin/` 负责宿主面与工具注册），构建产物在 `lib/`；随包样例在 `samples/quickstart/`。当前版本 `0.2.1`（与 `package.json` 一致）。测试用 `node --test test/*.test.mjs`；公开样本缺失导致的 skip 属正常，不是失败。
+TypeScript 源码在 `src/`（`src/core/` 负责 CSV 解析、补货计算、MOQ 取整、整数分金额、导出与路径安全；`src/plugin/` 负责宿主面与工具注册），构建产物在 `lib/`；随包样例在 `samples/quickstart/`。当前版本 `0.2.2`（与 `package.json` 一致）。测试用 `node --test test/*.test.mjs`；公开样本缺失导致的 skip 属正常，不是失败。
 
 开头 hero 与结构图都由 [`scripts/gen-readme-assets.py`](scripts/gen-readme-assets.py) 程序化生成（hero 用 Python + Pillow 渲染成 1440×576 的 webp，结构图是手写 SVG，缺 CJK 字体会直接报错退出）：`python scripts/gen-readme-assets.py` 可重复执行，输出 `docs/assets/dsh-store-replenish-hero-{zh,en}-{light,dark}.webp` 与 `docs/assets/dsh-store-replenish-flow-v5-{light,dark}.svg`；图里的数字直接读 `samples/quickstart/expected/result.json`，不会和金标漂移。本仓没有 benchmark 数据集，因此不画 evidence 图。
 

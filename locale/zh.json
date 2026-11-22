@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Store replenish",
+    "description": "把门店-商品销售库存表变成按 SKU 的补货建议、按门店汇总的补货单和补货 CSV。"
+  }
+}

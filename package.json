@@ -1,6 +1,6 @@
 {
   "name": "dsh-store-replenish",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Store-SKU replenishment suggestions, per-store replenishment plans and replenishment CSV; local files only.",
   "type": "module",
   "main": "./lib/plugin/index.js",
@@ -9,7 +9,8 @@
     ".": {
       "types": "./lib/plugin/index.d.ts",
       "default": "./lib/plugin/index.js"
-    }
+    },
+    "./locale/*.json": "./locale/*.json"
   },
   "files": [
     "lib",
@@ -27,7 +28,8 @@
     "icon.svg",
     "samples",
     "TROUBLESHOOTING.md",
-    "screenshots.json"
+    "screenshots.json",
+    "locale/*.json"
   ],
   "dsh": {
     "bundle": {
@@ -101,5 +103,10 @@
     "@deepseek-ai/dsh-tools": {
       "optional": true
     }
+  },
+  "icon": "icon.svg",
+  "author": {
+    "name": "PerryLink",
+    "url": "https://github.com/PerryLink"
   }
 }
